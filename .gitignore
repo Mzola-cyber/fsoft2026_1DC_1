@@ -1,0 +1,16 @@
+# Build do CMake / CLion
+cmake-build-*/
+build/
+
+# Configuracoes locais do CLion (cada um tem as suas)
+.idea/
+
+# Ficheiros compilados
+*.o
+*.obj
+*.exe
+*.out
+
+# Ficheiros temporarios do Windows
+Thumbs.db
+Desktop.ini
