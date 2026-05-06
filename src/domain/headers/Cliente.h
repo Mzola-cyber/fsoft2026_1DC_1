@@ -2,6 +2,7 @@
 // Created by Mário Figueira on 02/05/2026.
 //
 
+
 #ifndef FSOFT_CLIENTE_H
 #define FSOFT_CLIENTE_H
 

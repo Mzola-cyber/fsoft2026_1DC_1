@@ -2,6 +2,7 @@
 // Created by Mário Figueira on 03/05/2026.
 //
 
+
 #ifndef FSOFT_VEICULO_H
 #define FSOFT_VEICULO_H
 #include <string>
