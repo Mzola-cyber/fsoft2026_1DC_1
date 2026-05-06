@@ -36,4 +36,5 @@ std::string Deposito:: getLocalizacao() const {
 }
 int Deposito::getCapacidadeMax() const {
     return capacidadeMax;
+
 }

@@ -231,3 +231,4 @@ const std::vector<Cliente>&   Sistema::getClientes()   const { return clientes; 
 const std::vector<Deposito>&  Sistema::getDepositos()  const { return depositos; }
 const std::vector<Veiculo>&   Sistema::getVeiculos()   const { return veiculos; }
 const std::vector<Encomenda>& Sistema::getEncomendas() const { return encomendas; }
+

@@ -24,8 +24,4 @@ public:
 };
 
 
-
-
-
-
 #endif //FSOFT_CLIENTE_H

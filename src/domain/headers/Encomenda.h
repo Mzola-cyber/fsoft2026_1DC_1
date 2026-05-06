@@ -45,5 +45,4 @@ public:
 
 };
 
-
 #endif //FSOFT_ENCOMENDA

@@ -25,5 +25,4 @@ public:
 
 };
 
-
 #endif //FSOFT_DEPOSITO_H

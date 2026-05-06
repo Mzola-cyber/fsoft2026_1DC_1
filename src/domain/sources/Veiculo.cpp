@@ -41,4 +41,5 @@ bool Veiculo::estaDisponivel() const {
 }
 void Veiculo::setDisponivel(bool disponivel) {
     this->disponivel=disponivel;
+
 }
