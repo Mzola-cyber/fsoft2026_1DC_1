@@ -2,7 +2,6 @@
 // Created by Mário Figueira on 03/05/2026.
 //
 
-
 #include "Deposito.h"
 #include<stdexcept>
 

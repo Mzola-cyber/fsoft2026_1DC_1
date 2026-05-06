@@ -24,7 +24,6 @@ public:
     void setDisponivel(bool disponivel);
 
 
-
 };
 
 #endif //FSOFT_VEICULO_H

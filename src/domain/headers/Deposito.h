@@ -22,8 +22,6 @@ public:
     std::string getNome() const;
     std::string getLocalizacao() const;
     int getCapacidadeMax() const;
-
-
 };
 
 #endif //FSOFT_DEPOSITO_H

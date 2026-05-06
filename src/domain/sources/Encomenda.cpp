@@ -72,7 +72,6 @@ bool Encomenda::atualizarEstado(EstadoEncomenda novoestado) { //a melhor opção
             estado = novoestado;
             return true;
             }
-
         return false;
     }
 

@@ -24,5 +24,4 @@ public:
     void setNome(std::string nome);
 };
 
-
 #endif //FSOFT_CLIENTE_H

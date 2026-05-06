@@ -18,7 +18,7 @@ Sistema::Sistema()
     : proximoIdCliente(1),
       proximoIdDeposito(1),
       proximoIdEncomenda(1),
-      proximoIdveiculo(1){
+      proximoIdVeiculo(1){
 }
 
 // -------------------- Metodos auxiliares privados --------------------
@@ -94,7 +94,7 @@ int Sistema::adicionarVeiculo(const std::string& matricula,
     if (matricula.empty() || capacidadeMax <= 0.0) {
         return -1;
     }
-    int id=proximoIdveiculo++;
+    int id=proximoIdVeiculo++;
     veiculos.emplace_back(id, matricula, capacidadeMax);
     return id;
 }

@@ -42,8 +42,6 @@ public:
     void atribuirVeiculo(int idVeiculo);
     bool atualizarEstado(EstadoEncomenda novoestado);
 
-
-
 };
 
 #endif //FSOFT_ENCOMENDA

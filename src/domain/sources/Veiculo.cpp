@@ -24,7 +24,6 @@ Veiculo::Veiculo(int idVeiculo, std::string matricula, double capacidadeMax) {
 }
 
 
-
 int Veiculo::getId() const {
     return idVeiculo;
 }
