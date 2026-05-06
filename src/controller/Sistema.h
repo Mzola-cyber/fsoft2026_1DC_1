@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
-#include "../domain/Cliente.h"
-#include "../domain/Deposito.h"
-#include "../domain/Encomenda.h"
-#include "../domain/Veiculo.h"
+#include "../domain/headers/Cliente.h"
+#include "../domain/headers/Deposito.h"
+#include "../domain/headers/Encomenda.h"
+#include "../domain/headers/Veiculo.h"
 
 /**
  * Classe Sistema - Controlador (GRASP Controller / Pure Fabrication).
@@ -41,6 +41,7 @@ private:
     int proximoIdCliente;
     int proximoIdDeposito;
     int proximoIdEncomenda;
+    int proximoIdVeiculo;
 
     // Metodos auxiliares privados - procuram entidades por identificador.
     // Devolvem ponteiro para o elemento dentro do vetor, ou nullptr se
@@ -48,7 +49,7 @@ private:
     // modificado, por isso sao usados apenas dentro de um unico metodo.
     Cliente*   procurarCliente(int id);
     Deposito*  procurarDeposito(int id);
-    Veiculo*   procurarVeiculo(const std::string& matricula);
+    Veiculo*   procurarVeiculo(int idVeiculo); // fica mais facil procurarmos pelo id e nao pela matricula
     Encomenda* procurarEncomenda(int id);
 
 public:
@@ -82,10 +83,10 @@ public:
      * sucesso. Falha se a matricula ja existir ou a capacidade for
      * invalida (regra de negocio do UC4).
      */
-    bool adicionarVeiculo(const std::string& matricula, double capacidadeMax);
+    int adicionarVeiculo(const std::string& matricula, double capacidadeMax);
 
     /** Remove o veiculo com a matricula indicada. */
-    bool removerVeiculo(const std::string& matricula);
+    bool removerVeiculo(int idVeiculo);
 
     // ---------- Gestao de Encomendas (UC1) ----------
 

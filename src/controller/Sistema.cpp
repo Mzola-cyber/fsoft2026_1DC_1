@@ -17,7 +17,8 @@
 Sistema::Sistema()
     : proximoIdCliente(1),
       proximoIdDeposito(1),
-      proximoIdEncomenda(1) {
+      proximoIdEncomenda(1),
+      proximoIdveiculo(1){
 }
 
 // -------------------- Metodos auxiliares privados --------------------
@@ -36,9 +37,9 @@ Deposito* Sistema::procurarDeposito(int id) {
     return nullptr;
 }
 
-Veiculo* Sistema::procurarVeiculo(const std::string& matricula) {
+Veiculo* Sistema::procurarVeiculo(int idVeiculo) {
     for (Veiculo& v : veiculos) {
-        if (v.getMatricula() == matricula) return &v;
+        if (v.getmatriculaVeiculo() == idVeiculo) return &v;
     }
     return nullptr;
 }
@@ -87,22 +88,20 @@ int Sistema::adicionarDeposito(const std::string& nome,
 
 // -------------------- Gestao de Veiculos --------------------
 
-bool Sistema::adicionarVeiculo(const std::string& matricula,
+int Sistema::adicionarVeiculo(const std::string& matricula,
                                double capacidadeMax) {
     // UC4 - Regras de Negocio: matricula unica e capacidade > 0.
     if (matricula.empty() || capacidadeMax <= 0.0) {
-        return false;
+        return -1;
     }
-    if (procurarVeiculo(matricula) != nullptr) {
-        return false; // matricula duplicada
-    }
-    veiculos.emplace_back(matricula, capacidadeMax);
-    return true;
+    int id=proximoIdveiculo++;
+    veiculos.emplace_back(id, matricula, capacidadeMax);
+    return id;
 }
 
-bool Sistema::removerVeiculo(const std::string& matricula) {
+bool Sistema::removerVeiculo(int idVeiculo) {
     for (auto it = veiculos.begin(); it != veiculos.end(); ++it) {
-        if (it->getMatricula() == matricula) {
+        if (it->getId() == idVeiculo) {
             veiculos.erase(it);
             return true;
         }
@@ -142,7 +141,7 @@ int Sistema::criarEncomenda(int idCliente,
         // a encomenda fica Pendente.
         nova.atualizarEstado(EstadoEncomenda::PENDENTE);
     } else {
-        Veiculo* v = procurarVeiculo(matricula);
+        Veiculo* v = procurarVeiculo(idVeiculo);
         if (v != nullptr) {
             v->setDisponivel(false);
             nova.atribuirVeiculo(matricula);
@@ -192,9 +191,9 @@ bool Sistema::cancelarEncomenda(int idEncomenda) {
     bool ok = e->atualizarEstado(EstadoEncomenda::CANCELADA);
     if (ok) {
         // Se um veiculo estava reservado, liberta-o.
-        const std::string& matricula = e->getMatriculaVeiculo();
+        const std::string& matricula = e->getmatriculaVeiculo();
         if (!matricula.empty()) {
-            Veiculo* v = procurarVeiculo(matricula);
+            Veiculo* v = procurarVeiculo(idVeiculo);
             if (v != nullptr) v->setDisponivel(true);
         }
     }

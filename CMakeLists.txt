@@ -7,9 +7,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(GestaoEncomendas
     src/main.cpp
     src/controller/Sistema.cpp
-    src/domain/Cliente.cpp
-    src/domain/Encomenda.cpp
-    src/domain/Veiculo.cpp
-    src/domain/Deposito.cpp
+        src/domain/sources/Cliente.cpp
+        src/domain/sources/Encomenda.cpp
+        src/domain/sources/Veiculo.cpp
+        src/domain/sources/Deposito.cpp
     src/service/Recomendacao.cpp
 )
+
+target_include_directories(GestaoEncomendas PRIVATE
+        src/domain/headers)
