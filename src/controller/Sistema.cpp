@@ -39,7 +39,7 @@ Deposito* Sistema::procurarDeposito(int id) {
 
 Veiculo* Sistema::procurarVeiculo(int idVeiculo) {
     for (Veiculo& v : veiculos) {
-        if (v.getmatriculaVeiculo() == idVeiculo) return &v;
+        if (v.getId() == idVeiculo) return &v;
     }
     return nullptr;
 }
@@ -134,9 +134,9 @@ int Sistema::criarEncomenda(int idCliente,
 
     // Tenta atribuir um veiculo automaticamente. Esta responsabilidade
     // e delegada ao servico Recomendacao (camada service).
-    std::string matricula = Recomendacao::recomendarVeiculo(veiculos, peso);
+    int idVeiculo = Recomendacao::recomendarVeiculo(veiculos, peso);
 
-    if (matricula.empty()) {
+    if (idVeiculo=-1) {
         // Fluxo alternativo 6a do UC1: nenhum veiculo disponivel,
         // a encomenda fica Pendente.
         nova.atualizarEstado(EstadoEncomenda::PENDENTE);
@@ -144,7 +144,7 @@ int Sistema::criarEncomenda(int idCliente,
         Veiculo* v = procurarVeiculo(idVeiculo);
         if (v != nullptr) {
             v->setDisponivel(false);
-            nova.atribuirVeiculo(matricula);
+            nova.atribuirVeiculo(idVeiculo);
             nova.atualizarEstado(EstadoEncomenda::ATRIBUIDA);
         }
     }
@@ -167,7 +167,7 @@ bool Sistema::avancarEstadoEncomenda(int idEncomenda) {
             bool ok = e->atualizarEstado(EstadoEncomenda::ENTREGUE);
             if (ok) {
                 // Liberta o veiculo para futuras encomendas.
-                Veiculo* v = procurarVeiculo(e->getMatriculaVeiculo());
+                Veiculo* v = procurarVeiculo(e->getIdveiculo());
                 if (v != nullptr) v->setDisponivel(true);
             }
             return ok;
@@ -191,8 +191,8 @@ bool Sistema::cancelarEncomenda(int idEncomenda) {
     bool ok = e->atualizarEstado(EstadoEncomenda::CANCELADA);
     if (ok) {
         // Se um veiculo estava reservado, liberta-o.
-        const std::string& matricula = e->getmatriculaVeiculo();
-        if (!matricula.empty()) {
+        int idVeiculo=e->getIdveiculo();
+        if (idVeiculo=-1) {
             Veiculo* v = procurarVeiculo(idVeiculo);
             if (v != nullptr) v->setDisponivel(true);
         }
