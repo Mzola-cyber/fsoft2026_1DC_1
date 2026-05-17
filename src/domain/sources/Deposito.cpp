@@ -1,17 +1,17 @@
-//
-// Created by Mário Figueira on 03/05/2026.
-//
 
-#include "Deposito.h"
+
+
+
+#include "domain/headers/Deposito.h"
 #include<stdexcept>
 
 Deposito::Deposito(int id,std::string nome, std::string localizacao, int capacidadeMax) {
 
-    if (nome.empty()) { //caso de dpositos vazios
+    if (nome.empty()) { 
         throw std::invalid_argument("Nome do deposito invalido");
     }
 
-    if (localizacao.empty()) { //caso a localizacao esteja vazia
+    if (localizacao.empty()) { 
         throw std::invalid_argument("Localizacao do deposito invalida");
     }
     if (capacidadeMax <= 0) {

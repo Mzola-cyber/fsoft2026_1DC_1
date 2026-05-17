@@ -1,148 +1,127 @@
-# fsoft2026_1DC_1
+# Sistema de Gestão de Encomendas — FSOFT 2025/2026
 
-## Sistema de Gestao de Encomendas
+> Projeto académico — Unidade Curricular: Fundamentos de Desenvolvimento de Software (FSOFT)
+> Instituto Superior de Engenharia do Porto (ISEP) — Ano letivo 2025/2026
 
-> Projeto academico da UC **Fundamentos de Desenvolvimento de Software (FSOFT)**  
-> **Instituto Superior de Engenharia do Porto (ISEP)**  
-> Ano letivo **2025/2026**
+══════════════════════════════════════════════════════════════════════════════
 
----
+Índice rápido
 
-## Navegacao rapida
+- Visão geral
+- Objetivos académicos
+- Arquitetura e responsabilidades
+- Funcionalidades implementadas
+- Estrutura do repositório
+- Como compilar e executar (Windows / Powershell)
+- Notas de design: Recomendação de veículo
+- Contribuição e autores
 
-- [Visao geral](#visao-geral)
-- [Objetivos academicos](#objetivos-academicos)
-- [Atores do sistema](#atores-do-sistema)
-- [Funcionalidades previstas](#funcionalidades-previstas)
-- [Engenharia de software e artefactos](#engenharia-de-software-e-artefactos)
-- [Estrutura do repositorio](#estrutura-do-repositorio)
-- [Roadmap por iteracao](#roadmap-por-iteracao)
-- [Build, execucao e testes](#build-execucao-e-testes)
-- [Contribuicao](#contribuicao)
-- [Autores e referencias](#autores-e-referencias)
+══════════════════════════════════════════════════════════════════════════════
 
----
+Visão geral
 
-## Visao geral
+Este repositório contém uma implementação em C++ (C++17) de um sistema simples
+de gestão de encomendas. O foco pedagógico é demonstrar princípios de
+orientação a objetos, separação de responsabilidades (UI / Controller / Domain / Service)
+e pequenas decisões de design (por exemplo, serviço de recomendação como
+"Pure Fabrication").
 
-Este repositorio descreve o desenvolvimento de um sistema em **C++** para registo, acompanhamento e administracao de encomendas, com foco em modelacao orientada a objetos e controlo logistico.
+Objetivos académicos
 
-O sistema procura suportar:
+- Praticar modelação de domínio e diagramas UML
+- Implementar casos de uso (criar encomenda, atribuir veículo, consultar estado)
+- Aplicar boas práticas de design (encapsulamento, responsabilidade única)
 
-- Gestao de clientes e encomendas
-- Definicao de depositos de origem e destino
-- Gestao de veiculos e respetiva disponibilidade
-- Atribuicao de transporte e monitorizacao de estado
+Arquitetura e responsabilidades
 
-## Objetivos academicos
+- main.cpp: camada de UI (input/output), simplicidade e validação de input
+- controller/Sistema.*: controlador central — cria entidades e aplica regras de negócio
+- domain/*: entidades do domínio (Cliente, Deposito, Veiculo, Encomenda)
+- service/Recomendacao.*: serviço responsável por recomendar um veículo adequado
 
-| Dimensao | Foco |
-|---|---|
-| Engenharia de Requisitos | User Stories, requisitos funcionais e nao funcionais |
-| Analise e Design | Modelacao UML e definicao da arquitetura |
-| Implementacao | Desenvolvimento incremental em C++ |
-| Qualidade | Testes, consistencia de dados e rastreabilidade |
+Funcionalidades implementadas (resumo)
 
-## Atores do sistema
+- Registo de clientes
+- Adição / remoção de depósitos e veículos
+- Criação de encomendas (com validações: depósitos distintos, peso > 0)
+- Atribuição automática de veículo (serviço Recomendacao)
+- Avanço de estado da encomenda (Atribuída -> Em Transporte -> Entregue)
+- Consulta de estado por cliente e listagens globais para administrador
 
-### Cliente
+Estrutura do repositório
 
-- Criar encomendas
-- Selecionar deposito de origem e destino
-- Consultar o estado das suas encomendas
-
-### Administrador
-
-- Adicionar e remover veiculos
-- Remover clientes
-- Consultar informacao global do sistema
-
-## Funcionalidades previstas
-
-- Registar e gerir clientes
-- Criar encomendas com origem e destino
-- Consultar estado das encomendas
-- Gerir frota de veiculos
-- Atribuir automaticamente veiculos disponiveis
-- Disponibilizar visao global para administracao
-
-## Engenharia de software e artefactos
-
-Artefactos previstos ao longo das iteracoes:
-
-- User Stories
-- Requisitos funcionais e nao funcionais (FURPS+)
-- Domain Model
-- Use Case Diagram e Use Case Specifications
-- System Sequence Diagrams (SSD)
-- Diagramas de Design (classes, sequencia, componentes, deployment)
-
-## Estrutura do repositorio
-
-```text
+```
 fsoft2026_1DC_1/
-|-- Documentation/
-|   |-- Iteration01/
-|   |   |-- Technical Report.docx
-|   |   `-- Technical Report.pdf
-|   |-- Iteration02/
-|   `-- Iteration03/
-|-- Project/
-|-- ProjectTester/
-`-- README.md
+├─ CMakeLists.txt
+├─ README.md
+├─ Documentation/
+├─ src/
+│  ├─ main.cpp
+│  ├─ controller/Sistema.cpp, Sistema.h
+│  ├─ domain/headers/*.h
+│  ├─ domain/sources/*.cpp
+│  └─ service/Recomendacao.*
 ```
 
-> Estado atual: `Project/` e `ProjectTester/` ainda nao contem codigo-fonte neste repositorio.
+Como compilar e executar (Windows - Powershell)
 
-## Roadmap por iteracao
+1. Criar diretório de build e invocar o CMake:
 
-| Iteracao | Objetivo principal | Estado esperado |
-|---|---|---|
-| `Iteration01` | Levantamento de requisitos e base documental | Concluida (documentacao inicial) |
-| `Iteration02` | Consolidacao de analise/design e evolucao da arquitetura | Em progresso |
-| `Iteration03` | Implementacao, testes e estabilizacao | Planeada |
+```powershell
+mkdir build
+cd build
+cmake ..
+cmake --build . --config Release
+```
 
-## Build, execucao e testes
+2. Executar (a partir de build):
 
-No estado atual do repositorio, ainda nao existe configuracao oficial de build (por exemplo, `CMakeLists.txt`).
+```powershell
+.\GestaoEncomendas.exe
+```
 
-Quando a base de codigo estiver disponivel, esta secao deve incluir:
+Nota: os comandos acima assumem uma toolchain compatível com CMake e um
+compilador C++17 (MSVC, MinGW ou clang). O ficheiro CMakeLists.txt já
+inclui os ficheiros principais do projeto.
 
-- Pre-requisitos (compilador, versoes e ferramentas)
-- Comandos de compilacao
-- Comandos de execucao
-- Comandos de testes unitarios e de integracao
+Notas de design — Serviço Recomendação
 
-## Contribuicao
+O serviço `Recomendacao` (camada `service`) é responsável por isolar a
+logica de seleção de um veículo adequado para uma encomenda. A implementação
+actual procura um veículo disponível com capacidade suficiente e escolhe o
+melhor ajuste (menor capacidade que ainda suporta o peso) — uma heurística
+simples e eficaz para reduzir desperdício de capacidade.
 
-Fluxo recomendado para colaboracao:
+Por que colocar isto numa camada separada?
+- Evita que `Sistema` acumule lógica de optimização; melhora testabilidade;
+- Segrega a responsabilidade (Single Responsibility Principle);
+- Permite trocar a heurística (best-fit, first-fit, heurísticas por custo)
+  sem alterar o controlador.
 
-1. Criar uma branch por funcionalidade (`feature/nome-curto`)
-2. Fazer commits pequenos, coerentes e descritivos
-3. Abrir Pull Request com contexto tecnico e impacto
-4. Atualizar documentacao sempre que houver alteracoes relevantes
+Por exemplo, a função pública exposta é:
 
-## Tecnologias
+```cpp
+static int Recomendacao::recomendarVeiculo(const std::vector<Veiculo>& veiculos, double peso);
+```
 
-- Linguagem: C++
-- Paradigma: Orientacao a Objetos
-- Modelacao: UML
-- Versionamento: Git/GitHub
+Retorna o id do veículo recomendado ou `-1` caso nenhum veículo adequado
+esteja disponível.
 
-## Autores e referencias
+Contribuição
 
-### Autores
+- Use branches `feature/xxx` e pull requests para alterações.
+- Documente decisões arquiteturais e mantenha a consistência com o UML
+  produzido na pasta `Documentation`.
+
+Autores
 
 - Masembo Zola
-- Mario Figueira
+- Mário Figueira
 - David Soares
 
-Licenciatura em Engenharia de Telecomunicacoes e Informatica  
-Instituto Superior de Engenharia do Porto (ISEP)
+Referências académicas
 
-### Referencias
+- Larman, C. Applying UML and Patterns
+- Sommerville, I. Software Engineering
+- Material de apoio da UC FSOFT (ISEP)
 
-- Larman, C. *Applying UML and Patterns*.
-- Sommerville, I. *Software Engineering*.
-- OMG. *Unified Modeling Language (UML)*.
-- Material de apoio da UC FSOFT (ISEP).

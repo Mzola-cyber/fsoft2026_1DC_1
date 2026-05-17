@@ -1,9 +1,6 @@
-//
-// Created by Mário Figueira on 03/05/2026.
-//
 
-#include "Encomenda.h"
-#include <stdexcept> //usada para usar o throw
+#include "domain/headers/Encomenda.h"
+#include <stdexcept> 
 
 
 Encomenda::Encomenda(int id, int idCliente, int idDepOrigem, int idDepDestino,std::string descricao,double peso) {
@@ -30,7 +27,7 @@ int Encomenda::getIdCliente() const {
     return idCliente;
 }
 
-int Encomenda::getIdveiculo() const {
+int Encomenda::getIdVeiculo() const {
     return idVeiculo;
 }
 
@@ -44,34 +41,47 @@ EstadoEncomenda Encomenda::getEstado() const {
     return estado;
 }
 void Encomenda::atribuirVeiculo(int veiculo) {
-    this->idVeiculo = idVeiculo;
+    this->idVeiculo = veiculo;
 }
-bool Encomenda::atualizarEstado(EstadoEncomenda novoestado) { //a melhor opção seria de usar o enum só que no trabalho ta string
 
-        if (estado == EstadoEncomenda::REGISTADA &&
-            (novoestado == EstadoEncomenda::PENDENTE || novoestado == EstadoEncomenda::ATRIBUIDA)) {
-            estado = novoestado;
-            return true;
-            }
-
-        if (estado == EstadoEncomenda::ATRIBUIDA &&
-            novoestado == EstadoEncomenda::EM_TRANSPORTE) {
-            estado = novoestado;
-            return true;
-            }
-
-        if (estado == EstadoEncomenda::EM_TRANSPORTE &&
-            novoestado == EstadoEncomenda::ENTREGUE) {
-            estado = novoestado;
-            return true;
-            }
-
-        if (novoestado == EstadoEncomenda::CANCELADA &&
-            estado != EstadoEncomenda::ENTREGUE &&
-            estado != EstadoEncomenda::CANCELADA) {
-            estado = novoestado;
-            return true;
-            }
-        return false;
+bool Encomenda::atualizarEstado(EstadoEncomenda novoestado) {
+    if (estado == EstadoEncomenda::REGISTADA &&
+        (novoestado == EstadoEncomenda::PENDENTE || novoestado == EstadoEncomenda::ATRIBUIDA)) {
+        estado = novoestado;
+        return true;
     }
+
+    if (estado == EstadoEncomenda::ATRIBUIDA &&
+        novoestado == EstadoEncomenda::EM_TRANSPORTE) {
+        estado = novoestado;
+        return true;
+    }
+
+    if (estado == EstadoEncomenda::EM_TRANSPORTE &&
+        novoestado == EstadoEncomenda::ENTREGUE) {
+        estado = novoestado;
+        return true;
+    }
+
+    if (novoestado == EstadoEncomenda::CANCELADA &&
+        estado != EstadoEncomenda::ENTREGUE &&
+        estado != EstadoEncomenda::CANCELADA) {
+        estado = novoestado;
+        return true;
+    }
+    return false;
+}
+
+double Encomenda::getPeso() const {
+    return getpeso();
+}
+
+int Encomenda::getIdDepOrigem() const {
+    return idDepOrigem;
+}
+
+int Encomenda::getIdDepDestino() const {
+    return idDepDestino;
+}
+
 
