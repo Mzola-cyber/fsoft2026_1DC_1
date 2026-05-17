@@ -14,25 +14,6 @@ Cliente* Sistema::procurarCliente(int id) {
 }
 
 Deposito* Sistema::procurarDeposito(int id) {
-
-
-
-
-
-Sistema::Sistema()
-    : clientesRepository(),
-      depositosRepository(),
-      veiculosRepository(),
-      encomendaRepository() {
-}
-
-
-
-Cliente* Sistema::procurarCliente(int id) {
-    return clientesRepository.procurar(id);
-}
-
-Deposito* Sistema::procurarDeposito(int id) {
     return depositosRepository.procurar(id);
 }
 
@@ -43,8 +24,6 @@ Veiculo* Sistema::procurarVeiculo(int idVeiculo) {
 Encomenda* Sistema::procurarEncomenda(int id) {
     return encomendaRepository.procurar(id);
 }
-
-
 
 int Sistema::registarCliente(const std::string& nome,
                              const std::string& contacto) {
@@ -71,28 +50,22 @@ int Sistema::procurarClientePorIdOuContacto(const std::string& idOuContacto) con
             return id;
         }
     } catch (...) {
-        
     }
-    
-    
+
     for (const auto& c : clientesRepository.getAll()) {
         if (c.getContactoCliente() == idOuContacto) {
             return c.getId();
         }
     }
-    
+
     return -1;
 }
-
-
 
 int Sistema::adicionarDeposito(const std::string& nome,
                                const std::string& localizacao,
                                int capacidadeMax) {
     return depositosRepository.adicionar(nome, localizacao, capacidadeMax);
 }
-
-
 
 bool Sistema::adicionarVeiculo(const std::string& matricula,
                                double capacidadeMax) {
@@ -113,42 +86,35 @@ bool Sistema::removerVeiculo(int idVeiculo) {
     return veiculosRepository.remover(idVeiculo);
 }
 
-
-
 int Sistema::criarEncomenda(int idCliente,
                             int idDepOrigem,
                             int idDepDestino,
                             const std::string& descricao,
                             double peso) {
-    
     if (idDepOrigem == idDepDestino) return -1;
     if (peso <= 0.0)                  return -1;
     if (descricao.empty())            return -1;
 
-    if (procurarCliente(idCliente)   == nullptr) return -1;
+    if (procurarCliente(idCliente) == nullptr) return -1;
     if (procurarDeposito(idDepOrigem) == nullptr) return -1;
     if (procurarDeposito(idDepDestino) == nullptr) return -1;
 
-    
-    
     int id = encomendaRepository.adicionar(idCliente, idDepOrigem, idDepDestino,
-                                          descricao, peso);
+                                            descricao, peso);
     if (id == -1) return -1;
-    
+
     Encomenda* nova = encomendaRepository.procurar(id);
     if (nova == nullptr) return -1;
 
-    
     int idVeiculo = Recomendacao::recomendarEReservar(veiculosRepository, peso);
 
     if (idVeiculo == -1) {
-        
-        
         nova->atualizarEstado(EstadoEncomenda::PENDENTE);
     } else {
         nova->atribuirVeiculo(idVeiculo);
         nova->atualizarEstado(EstadoEncomenda::ATRIBUIDA);
     }
+
     return id;
 }
 
@@ -156,18 +122,12 @@ bool Sistema::avancarEstadoEncomenda(int idEncomenda) {
     Encomenda* e = procurarEncomenda(idEncomenda);
     if (e == nullptr) return false;
 
-    
-    
-    
-    
     switch (e->getEstado()) {
         case EstadoEncomenda::ATRIBUIDA:
             return e->atualizarEstado(EstadoEncomenda::EM_TRANSPORTE);
-
         case EstadoEncomenda::EM_TRANSPORTE: {
             bool ok = e->atualizarEstado(EstadoEncomenda::ENTREGUE);
             if (ok) {
-                
                 veiculosRepository.libertarVeiculo(e->getIdVeiculo());
             }
             return ok;
@@ -181,7 +141,6 @@ bool Sistema::cancelarEncomenda(int idEncomenda) {
     Encomenda* e = procurarEncomenda(idEncomenda);
     if (e == nullptr) return false;
 
-    
     EstadoEncomenda atual = e->getEstado();
     if (atual == EstadoEncomenda::ENTREGUE ||
         atual == EstadoEncomenda::CANCELADA) {
@@ -190,7 +149,6 @@ bool Sistema::cancelarEncomenda(int idEncomenda) {
 
     bool ok = e->atualizarEstado(EstadoEncomenda::CANCELADA);
     if (ok) {
-        
         int idVeiculo = e->getIdVeiculo();
         if (idVeiculo != -1) {
             veiculosRepository.libertarVeiculo(idVeiculo);
@@ -205,14 +163,11 @@ std::string Sistema::obterMatriculaVeiculo(int idVeiculo) const {
     return {};
 }
 
-
-
 std::string Sistema::consultarEstadoEncomenda(int idEncomenda,
                                               int idCliente) const {
     const Encomenda* e = encomendaRepository.procurarConst(idEncomenda);
     if (e == nullptr) return "";
 
-    
     if (e->getIdCliente() != idCliente) return "";
 
     std::string estado;
@@ -224,6 +179,7 @@ std::string Sistema::consultarEstadoEncomenda(int idEncomenda,
         case EstadoEncomenda::ENTREGUE:      estado = "Entregue"; break;
         case EstadoEncomenda::CANCELADA:     estado = "Cancelada"; break;
     }
+
     return "Encomenda #" + std::to_string(e->getId()) +
            " - Estado: " + estado;
 }
