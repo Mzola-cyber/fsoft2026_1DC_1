@@ -1,9 +1,5 @@
-//
-// Created by Mário Figueira on 03/05/2026.
-//
 
-
-#include "Veiculo.h"
+#include "domain/headers/Veiculo.h"
 #include <stdexcept>
 #include<string>
 
@@ -27,7 +23,7 @@ Veiculo::Veiculo(int idVeiculo, std::string matricula, double capacidadeMax) {
 int Veiculo::getId() const {
     return idVeiculo;
 }
-std::string Veiculo::getmatriculaVeiculo() const {
+std::string Veiculo::getMatriculaVeiculo() const {
     return matricula;
 }
 double Veiculo::getCapacidade() const {

@@ -1,9 +1,9 @@
-//
-// Created by Mário Figueira on 02/05/2026.
-//
 
-#include "Cliente.h"
-#include <stdexcept> //usada para usar o throw
+
+
+
+#include "domain/headers/Cliente.h"
+#include <stdexcept> 
 
 
 Cliente::Cliente(int id,std::string nomeCliente, std::string contactoCliente ){
@@ -16,7 +16,7 @@ Cliente::Cliente(int id,std::string nomeCliente, std::string contactoCliente ){
     this->contactoCliente = contactoCliente;
 }
 
-int Cliente::getId() const {  //retorna o id do cliente
+int Cliente::getId() const {  
     return id;
 }
 
@@ -28,7 +28,7 @@ std::string Cliente::getNome() const {
 }
 void Cliente::setNome(std::string nome) {
     if (nome.empty()) {
-        throw std::invalid_argument("Nome invalido"); //é para mandar nome invalido
+        throw std::invalid_argument("Nome invalido"); 
 
     }
     this->nomeCliente = nome;
