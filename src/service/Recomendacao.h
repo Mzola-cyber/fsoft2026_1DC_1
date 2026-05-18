@@ -2,7 +2,9 @@
 #define RECOMENDACAO_H
 
 #include <vector>
-#include "domain/headers/Veiculo.h"
+#include "../domain/headers/Veiculo.h"
+#include "repository/headers/VeiculoRepository.h"
+
 #include "repository/headers/VeiculoRepository.h"
 
 class Recomendacao {

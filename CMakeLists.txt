@@ -21,10 +21,10 @@ set(DOMAIN_SOURCES
 
 # Repository sources
 set(REPOSITORY_SOURCES
-    ${PROJECT_SRC_DIR}/repository/sources/ClienteRepository.cpp
     ${PROJECT_SRC_DIR}/repository/sources/DepositoRepository.cpp
-    ${PROJECT_SRC_DIR}/repository/sources/EncomendaRepository.cpp
+    ${PROJECT_SRC_DIR}/repository/sources/ClienteRepository.cpp
     ${PROJECT_SRC_DIR}/repository/sources/VeiculoRepository.cpp
+    ${PROJECT_SRC_DIR}/repository/sources/EncomendaRepository.cpp
 )
 
 # Controller sources
@@ -57,6 +57,10 @@ set(HEADERS
     ${PROJECT_DOMAIN_HEADERS_DIR}/Encomenda.h
     ${PROJECT_DOMAIN_HEADERS_DIR}/Veiculo.h
     ${PROJECT_SERVICE_DIR}/Recomendacao.h
+    ${PROJECT_SRC_DIR}/repository/headers/DepositoRepository.h
+    ${PROJECT_SRC_DIR}/repository/headers/ClienteRepository.h
+    ${PROJECT_SRC_DIR}/repository/headers/VeiculoRepository.h
+    ${PROJECT_SRC_DIR}/repository/headers/EncomendaRepository.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})

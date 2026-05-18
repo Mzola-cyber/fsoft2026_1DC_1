@@ -4,14 +4,14 @@
 #include <string>
 #include <vector>
 
-#include "../domain/headers/Cliente.h"
-#include "../domain/headers/Deposito.h"
-#include "../domain/headers/Encomenda.h"
-#include "../domain/headers/Veiculo.h"
-#include "../repository/headers/DepositoRepository.h"
-#include "../repository/headers/ClienteRepository.h"
-#include "../repository/headers/VeiculoRepository.h"
-#include "../repository/headers/EncomendaRepository.h"
+#include "domain/headers/Cliente.h"
+#include "domain/headers/Deposito.h"
+#include "domain/headers/Encomenda.h"
+#include "domain/headers/Veiculo.h"
+#include "repository/headers/DepositoRepository.h"
+#include "repository/headers/ClienteRepository.h"
+#include "repository/headers/VeiculoRepository.h"
+#include "repository/headers/EncomendaRepository.h"
 
 class Sistema {
 private:
