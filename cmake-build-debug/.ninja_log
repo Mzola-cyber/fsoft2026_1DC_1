@@ -1,0 +1,13 @@
+# ninja log v6
+29	1206	8008369500494909	CMakeFiles/GestaoEncomendas.dir/src/domain/sources/Cliente.cpp.obj	1dee4c12ae7f70cf
+65	1227	8008369500848272	CMakeFiles/GestaoEncomendas.dir/src/domain/sources/Veiculo.cpp.obj	53df49a3bbf4a918
+40	1243	8008369500602613	CMakeFiles/GestaoEncomendas.dir/src/domain/sources/Deposito.cpp.obj	363ee9929f8aeda9
+52	1471	8008369500722718	CMakeFiles/GestaoEncomendas.dir/src/domain/sources/Encomenda.cpp.obj	c294b3b7e9cb65bc
+18	1613	8008369500383573	CMakeFiles/GestaoEncomendas.dir/src/controller/Sistema.cpp.obj	7dd2afb055ff0c3b
+8	2238	8008369500281859	CMakeFiles/GestaoEncomendas.dir/main.cpp.obj	61ebfd7bc4d6249c
+1211	2862	8008369512321078	CMakeFiles/GestaoEncomendas.dir/src/repository/sources/ClienteRepository.cpp.obj	19c65df1aea6bcef
+1243	2909	8008369512639705	CMakeFiles/GestaoEncomendas.dir/src/repository/sources/EncomendaRepository.cpp.obj	3363018eb92044b1
+1228	2950	8008369512479708	CMakeFiles/GestaoEncomendas.dir/src/repository/sources/DepositoRepository.cpp.obj	7856cb3e863351de
+1473	3128	8008369514937460	CMakeFiles/GestaoEncomendas.dir/src/repository/sources/VeiculoRepository.cpp.obj	bedcedb06cfd0739
+1614	3227	8008369516337602	CMakeFiles/GestaoEncomendas.dir/src/service/Recomendacao.cpp.obj	da32dc5072f7e503
+3227	3562	8008369532475772	GestaoEncomendas.exe	1b622737a4c8f63e
