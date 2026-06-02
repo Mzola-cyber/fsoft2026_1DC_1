@@ -1,7 +1,7 @@
 {
 	"InstallScripts" : 
 	[
-		"C:/Users/masem/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/cmake_install.cmake"
+		"/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

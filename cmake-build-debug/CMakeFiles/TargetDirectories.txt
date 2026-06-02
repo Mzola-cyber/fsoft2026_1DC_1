@@ -1,3 +1,3 @@
-C:/Users/masem/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/CMakeFiles/GestaoEncomendas.dir
-C:/Users/masem/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/masem/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/CMakeFiles/GestaoEncomendas.dir
+/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
