@@ -92,5 +92,31 @@ add_executable(GestaoEncomendas main.cpp
 
         src/service/Recomendacao.cpp
         src/service/Recomendacao.h
+
+        src/View/sources/ClienteView.cpp
+        src/View/headers/ClienteView.h
+        src/View/sources/AdministradorView.cpp
+        src/View/headers/AdministradorView.h
+        src/View/sources/UtilsView.cpp
+        src/View/headers/UtilsView.h
+        src/dtos/headers/ClienteInDto.h
+        src/dtos/headers/EncomendaOutDto.h
+        src/dtos/headers/DepositoOutDto.h
+        src/dtos/headers/VeiculoInDto.h
+        src/mappers/sources/ClienteMapper.cpp
+        src/mappers/headers/ClienteMapper.h
+        src/mappers/sources/VeiculoMapper.cpp
+        src/mappers/headers/VeiculoMapper.h
+        src/mappers/sources/EncomendaMapper.cpp
+        src/mappers/headers/EncomendaMapper.h
+        src/mappers/sources/DepositoMapper.cpp
+        src/mappers/headers/DepositoMapper.h
+        src/dtos/headers/ClienteOutDto.h
+        src/dtos/headers/VeiculoOutDto.h
+        src/dtos/headers/EncomendaInDto.h
+        src/dtos/headers/DepositoInDto.h
+
+
+
 )
 

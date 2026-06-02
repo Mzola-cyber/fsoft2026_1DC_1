@@ -2,12 +2,12 @@
 #include <algorithm>
 
 DepositoRepository::DepositoRepository() {
-    adicionar("Trindade", "Trindade", 5000);
-    adicionar("Luanda", "Luanda", 8000);
-    adicionar("Cazenga", "Cazenga", 6000);
-    adicionar("Combatentes", "Combatentes", 7000);
-    adicionar("Belas", "Belas", 4000);
-    adicionar("Matosinhos", "Matosinhos", 3000);
+    adicionar("Depodito Trindade", "Porto Centro", 5000);
+    adicionar("Deposito Luanda", "Porto Sudoeste", 8000);
+    adicionar("Deposito Cazenga", "Porto Oeste", 6000);
+    adicionar("Deposito Combatentes", "Porto Este", 7000);
+    adicionar("Deposito Belas", "Porto Norte", 4000);
+    adicionar("Deposito Matosinhos", "Porto Sul", 3000);
 }
 
 int DepositoRepository::adicionar(const std::string& nome,
