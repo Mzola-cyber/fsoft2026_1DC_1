@@ -92,15 +92,5 @@ add_executable(GestaoEncomendas main.cpp
 
         src/service/Recomendacao.cpp
         src/service/Recomendacao.h
-        src/View/sources/MenuprincipalView.cpp
-        src/View/headers/MenuprincipalView.h
-        src/View/sources/ClienteView.cpp
-        src/View/headers/ClienteView.h
-        src/View/sources/AdministradorView.cpp
-        src/View/headers/AdministradorView.h
-        src/View/sources/UtilsView.cpp
-        src/View/headers/UtilsView.h
-
-
 )
 

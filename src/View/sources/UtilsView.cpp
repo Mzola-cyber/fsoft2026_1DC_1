@@ -60,60 +60,63 @@ void UtilsView::imprimirSeparador() {
 
 void UtilsView::listarClientes(const Sistema &s) {
     std::cout << "\n=== Clientes ===\n";
-    const auto& clientes = s.getClientes();
+    std::vector<ClienteOutDto> clientes= s.getClientes();
+
     if (clientes.empty()) {
         std::cout << "  (sem clientes registados)\n";
         return;
     }
-    for (const Cliente& c : clientes) {
-        std::cout << "  ID " << c.getId()
-                  << " | " << c.getNome()
-                  << " | " << c.getContactoCliente() << "\n";
+    for (const ClienteOutDto& c : clientes) {
+        std::cout << "  ID " << c.id
+                  << " | " << c.nome
+                  << " | " << c.contacto << "\n";
     }
 }
 
 void UtilsView::listarDepositos(const Sistema &s) {
     std::cout << "\n=== Depositos ===\n";
-    const auto& depositos = s.getDepositos();
+    std::vector<DepositoOutDto> depositos= s.getDepositos();
+
     if (depositos.empty()) {
         std::cout << "  (sem depositos)\n";
         return;
     }
-    for (const Deposito& d : depositos) {
-        std::cout << "  ID " << d.getId()
-                  << " | " << d.getNome()
-                  << " | " << d.getLocalizacao()
-                  << " | cap: " << d.getCapacidadeMax() << "\n";
+    for (const DepositoOutDto& d : depositos) {
+        std::cout << "  ID " << d.id
+                  << " | " << d.nome
+                  << " | " << d.localizacao
+                  << " | cap: " << d.capacidadeMax << "\n";
     }
 }
 
 
 void UtilsView::listarDepositosComIndices(const Sistema &s) {
-    const auto& depositos = s.getDepositos();
+ std::vector<DepositoOutDto> depositos= s.getDepositos();
     if (depositos.empty()) {
         std::cout << "  (sem depositos disponiveis)\n";
         return;
     }
     for (size_t i = 0; i < depositos.size(); ++i) {
         const auto& d = depositos[i];
-        std::cout << "  [" << i << "] " << d.getNome()
-                  << " (" << d.getLocalizacao() << ")"
-                  << " | cap: " << d.getCapacidadeMax() << "\n";
+        std::cout << "  [" << i << "] " << d.nome
+                  << " (" << d.localizacao << ")"
+                  << " | cap: " << d.capacidadeMax << "\n";
     }
 }
 
 
 void UtilsView::listarVeiculos(const Sistema& s) {
     std::cout << "\n=== Veiculos ===\n";
-    const auto& veiculos = s.getVeiculos();
+    std::vector<VeiculoOutDto> veiculos= s.getVeiculos();
+
     if (veiculos.empty()) {
         std::cout << "  (sem veiculos)\n";
         return;
     }
-    for (const Veiculo& v : veiculos) {
-        std::cout << "  " << v.getMatriculaVeiculo()
-                  << " | cap: " << v.getCapacidade()
-                  << " | " << (v.estaDisponivel() ? "disponivel" : "ocupado")
+    for (const VeiculoOutDto& v : veiculos) {
+        std::cout << "  " << v.matricula
+                  << " | cap: " << v.capacidadeMax
+                  << " | " << (v.disponivel ? "disponivel" : "ocupado")
                   << "\n";
     }
 }
@@ -141,24 +144,25 @@ const char* UtilsView::nomeEstado(EstadoEncomenda e) {
 
 void UtilsView::listarEncomendas(const Sistema& s) {
     std::cout << "\n=== Encomendas ===\n";
-    const auto& encomendas = s.getEncomendas();
+    std::vector<EncomendaOutDto> encomendas= s.getEncomendas();
+
     if (encomendas.empty()) {
         std::cout << "  (sem encomendas)\n";
         return;
     }
-    for (const Encomenda& e : encomendas) {
-        std::cout << "  #" << e.getId()
-                  << " | cliente " << e.getIdCliente()
-                  << " | " << e.getIdDepOrigem() << " -> " << e.getIdDepDestino()
-                  << " | peso " << e.getPeso()
+    for (const EncomendaOutDto& e : encomendas) {
+        std::cout << "  #" << e.id
+                  << " | cliente " << e.idCliente
+                  << " | " << e.idDepOrigem << " -> " << e.idDepDestino
+                  << " | peso " << e.peso
                    << " | veiculo "
                    << ([&s,&e]() {
-                        int idV = e.getIdVeiculo();
+                        int idV = e.idVeiculo;
                         if (idV == -1) return std::string("-");
                         std::string m = s.obterMatriculaVeiculo(idV);
                         return m.empty() ? std::string("-") : m;
                       })()
-                  << " | " << nomeEstado(e.getEstado())
+                  << " | " << nomeEstado(e.estado)
                   << "\n";
     }
 }

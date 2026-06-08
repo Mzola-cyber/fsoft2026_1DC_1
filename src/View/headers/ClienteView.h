@@ -5,12 +5,21 @@
 #ifndef GESTAOENCOMENDAS_CLIENTEVIEW_H
 #define GESTAOENCOMENDAS_CLIENTEVIEW_H
 #include "../../controller/Sistema.h"
+#include"../../dtos/headers/DepositoOutDto.h"
+
 
 
 class ClienteView {
     public:
         ClienteView();
-        void menuCliente(Sistema& s);
+    ClienteInDto getCliente();
+    EncomendaInDto getEncomenda(const std::vector<DepositoOutDto>& depositos);
+    int getIdEncomenda();
+    int getIdCliente();
+    void printCliente(const ClienteOutDto& cliente);
+    void printEncomenda(const EncomendaOutDto& encomenda);
+    void printEncomendas(const std::vector<EncomendaOutDto>& encomendas);
+
 };
 
 

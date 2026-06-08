@@ -1,6 +1,6 @@
 #ifndef SISTEMA_H
 #define SISTEMA_H
-
+//com a adicição das dtos no codigo, estou a fazer algumas alterações no sistema
 #include <string>
 #include <vector>
 
@@ -12,9 +12,20 @@
 #include "repository/headers/ClienteRepository.h"
 #include "repository/headers/VeiculoRepository.h"
 #include "repository/headers/EncomendaRepository.h"
+//adição dos headers das dtos
+
+#include "../dtos/headers/ClienteInDto.h"
+#include "../dtos/headers/ClienteOutDto.h"
+#include "../dtos/headers/DepositoInDto.h"
+#include "../dtos/headers/DepositoOutDto.h"
+#include "../dtos/headers/VeiculoInDto.h"
+#include "../dtos/headers/VeiculoOutDto.h"
+#include "../dtos/headers/EncomendaInDto.h"
+#include "../dtos/headers/EncomendaOutDto.h"
 
 class Sistema {
 private:
+
     ClienteRepository      clientesRepository;
     DepositoRepository     depositosRepository;
     VeiculoRepository      veiculosRepository;
@@ -23,26 +34,23 @@ private:
     Deposito*  procurarDeposito(int id);
     Veiculo*   procurarVeiculo(int idVeiculo);
     Encomenda* procurarEncomenda(int id);
+    void runCliente();
+    void runAdministrador();
 
 public:
     Sistema();
-    int registarCliente(const std::string& nome, const std::string& contacto);
+    void run();
+    ClienteOutDto registarCliente(const ClienteInDto& dto);
     bool removerCliente(int idCliente);
     int procurarClientePorIdOuContacto(const std::string& idOuContacto) const;
 
-    int adicionarDeposito(const std::string& nome,
-                          const std::string& localizacao,
-                          int capacidadeMax);
+    DepositoOutDto adicionarDeposito(const DepositoInDto& dto);
 
-    bool adicionarVeiculo(const std::string& matricula, double capacidadeMax);
+    VeiculoOutDto adicionarVeiculo(const VeiculoInDto& dto);
 
     bool removerVeiculo(int idVeiculo);
 
-    int criarEncomenda(int idCliente,
-                       int idDepOrigem,
-                       int idDepDestino,
-                       const std::string& descricao,
-                       double peso);
+   EncomendaOutDto criarEncomenda(const EncomendaInDto& dto);
 
     bool avancarEstadoEncomenda(int idEncomenda);
 
@@ -50,10 +58,10 @@ public:
 
     std::string consultarEstadoEncomenda(int idEncomenda, int idCliente) const;
 
-    const std::vector<Cliente>&   getClientes()   const;
-    const std::vector<Deposito>&  getDepositos()  const;
-    const std::vector<Veiculo>&   getVeiculos()   const;
-    const std::vector<Encomenda>& getEncomendas() const;
+     std::vector<ClienteOutDto>   getClientes()   const;
+     std::vector<DepositoOutDto>  getDepositos()  const;
+     std::vector<VeiculoOutDto>   getVeiculos()   const;
+     std::vector<EncomendaOutDto> getEncomendas() const;
     std::string obterMatriculaVeiculo(int idVeiculo) const;
 };
 
