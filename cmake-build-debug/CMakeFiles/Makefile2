@@ -54,10 +54,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/mariofigueira/CLionProjects/fsoft2026_1DC_1
+CMAKE_SOURCE_DIR = "/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1 copy"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/mariofigueira/CLionProjects/fsoft2026_1DC_1/cmake-build-debug
+CMAKE_BINARY_DIR = "/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1 copy/cmake-build-debug"
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -85,14 +85,14 @@ clean: CMakeFiles/GestaoEncomendas.dir/clean
 CMakeFiles/GestaoEncomendas.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GestaoEncomendas.dir/build.make CMakeFiles/GestaoEncomendas.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GestaoEncomendas.dir/build.make CMakeFiles/GestaoEncomendas.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Built target GestaoEncomendas"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1 copy/cmake-build-debug/CMakeFiles" --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Built target GestaoEncomendas"
 .PHONY : CMakeFiles/GestaoEncomendas.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/GestaoEncomendas.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mariofigueira/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/CMakeFiles 16
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1 copy/cmake-build-debug/CMakeFiles" 16
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/GestaoEncomendas.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mariofigueira/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1 copy/cmake-build-debug/CMakeFiles" 0
 .PHONY : CMakeFiles/GestaoEncomendas.dir/rule
 
 # Convenience name for target.
@@ -102,7 +102,7 @@ GestaoEncomendas: CMakeFiles/GestaoEncomendas.dir/rule
 # codegen rule for target.
 CMakeFiles/GestaoEncomendas.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GestaoEncomendas.dir/build.make CMakeFiles/GestaoEncomendas.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Finished codegen for target GestaoEncomendas"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1 copy/cmake-build-debug/CMakeFiles" --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Finished codegen for target GestaoEncomendas"
 .PHONY : CMakeFiles/GestaoEncomendas.dir/codegen
 
 # clean rule for target.

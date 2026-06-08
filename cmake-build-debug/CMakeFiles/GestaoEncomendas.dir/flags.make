@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1/src
+CXX_INCLUDES = -I"/Users/mariofigueira/CLionProjects/fsoft2026_1DC_1 copy/src"
 
 CXX_FLAGSarm64 = -g -std=gnu++20 -arch arm64 -fcolor-diagnostics
 
