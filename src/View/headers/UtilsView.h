@@ -7,19 +7,19 @@
 #include "../../controller/Sistema.h"
 
 class UtilsView {
-   public:
-        UtilsView();
-        void limparBuffer();
-        int lerInteiro(const std::string& prompt);
-        double lerDouble(const std::string& prompt);
-        std::string lerLinha(const std::string& prompt);
-        void imprimirSeparador();
-        void listarClientes(const Sistema& s);
-        void listarDepositos(const Sistema& s);
-        void listarVeiculos(const Sistema& s);
-        void listarEncomendas(const Sistema& s);
-        void listarDepositosComIndices(const Sistema& s);
-        const char* nomeEstado(EstadoEncomenda e);
+public:
+    UtilsView();
+    void limparBuffer();
+    int lerInteiro(const std::string& prompt);
+    double lerDouble(const std::string& prompt);
+    std::string lerLinha(const std::string& prompt);
+    void imprimirSeparador();
+    void listarClientes(const Sistema& s);
+    void listarDepositos(const Sistema& s);
+    void listarVeiculos(const Sistema& s);
+    void listarEncomendas(const Sistema& s);
+    void listarDepositosComIndices(const Sistema& s);
+    const char* nomeEstado(EstadoEncomenda e);
 
 };
 

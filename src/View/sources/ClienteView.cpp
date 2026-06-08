@@ -3,7 +3,6 @@
 //
 
 #include "../headers/ClienteView.h"
-
 #include "../headers/UtilsView.h"
 #include<vector>
 #include<iostream>
@@ -12,162 +11,123 @@ using namespace std;
 
 
 ClienteView::ClienteView() {
-
 }
 
-void ClienteView::menuCliente(Sistema& s) {
+ClienteInDto ClienteView::getCliente() {
     UtilsView utils;
-    bool sair = false;
-    while (!sair) {
-        std::cout << "\n--- Menu Cliente ---\n"
+    ClienteInDto cliente;
 
-        << "1. Registar novo cliente\n"
-        << "2. Criar encomenda\n"
-        << "3. Consultar estado de encomenda\n"
-        << "4. Cancelar encomenda\n"
-        << "0. Voltar\n";
-        int op = utils.lerInteiro("Opcao: ");
+    cout<<"\n##### REGISTAR CLIENTE ####\n#"<< endl;
 
-        switch (op) {
-            case 1: {
-                std::string nome =utils. lerLinha("Nome: ");
-                std::string contacto =utils.lerLinha("Contacto Telefonico: ");
-                int id = s.registarCliente(nome, contacto);
-                if (id == -1) std::cout << "Dados invalidos ou contacto ja registado.\n";
-                else          std::cout << "Cliente registado com sucesso.\n";
-                break;
-            }
-            case 2: {
+    cliente.nome= utils.lerLinha("Nome:");
+    cliente.contacto = utils.lerLinha("Contacto Telefonico: ");
+return cliente;
+}
 
-                std::string inputCliente = utils.lerLinha("Contacto do Cliente: ");
-                int idCliente = s.procurarClientePorIdOuContacto(inputCliente);
+EncomendaInDto ClienteView::getEncomenda(const std::vector<DepositoOutDto>& depositos) {
+    UtilsView utils;
 
-                if (idCliente == -1) {
-                    std::cout << "Cliente nao encontrado.\n";
-                    break;
-                }
-                std::cout << "Cliente validado com sucesso. " << "\n";
+    EncomendaInDto encomenda;
 
+    std::cout << "\n##### REGISTAR ENCOMENDA #####\n";
 
-                const auto& depositos = s.getDepositos();
-                if (depositos.empty()) {
-                    std::cout << "Nao existem depositos disponiveis.\n";
-                    break;
-                }
+    encomenda.idCliente = utils.lerInteiro("ID do Cliente: ");
 
-                std::cout << "\n=== Escolha o Deposito de ORIGEM ===\n";
-                utils.listarDepositosComIndices(s);
-                int indiceOrigem =utils.lerInteiro("Escolha o indice [0-" + std::to_string(depositos.size() - 1) + "]: ");
-                if (indiceOrigem < 0 || indiceOrigem >= static_cast<int>(depositos.size())) {
-                    std::cout << "Indice invalido.\n";
-                    break;
-                }
-                int idOrigem = depositos[indiceOrigem].getId();
+    if (depositos.empty()) {
+        std::cout << "Nao existem depositos disponiveis.\n";
+        return encomenda;
+    }
 
+    std::cout << "\n=== Depositos disponiveis ===\n";
+    for (size_t i = 0; i < depositos.size(); ++i) {
+        std::cout << "[" << i << "] "
+                  << depositos[i].nome
+                  << " | " << depositos[i].localizacao
+                  << " | cap: " << depositos[i].capacidadeMax
+                  << "\n";
+    }
 
-                int indiceDestino = -1;
-                int idDestino = -1;
-                while (true) {
-                    std::cout << "\n=== Escolha o Deposito de DESTINO ===\n";
-                    utils.listarDepositosComIndices(s);
-                    indiceDestino = utils.lerInteiro("Escolha o indice [0-" + std::to_string(depositos.size() - 1) + "]: ");
-                    if (indiceDestino < 0 || indiceDestino >= static_cast<int>(depositos.size())) {
-                        std::cout << "Indice invalido. Tente novamente.\n";
-                        continue;
-                    }
-                    idDestino = depositos[indiceDestino].getId();
-                    if (idOrigem == idDestino) {
-                        std::cout << "O deposito destino deve ser diferente do deposito origem. Por favor escolha novamente.\n";
-                        continue;
-                    }
-                    break;
-                }
+    int indiceOrigem = utils.lerInteiro("Escolha o indice do deposito de origem: ");
 
-                std::string desc =utils.lerLinha("Descricao: ");
-                double peso     = utils.lerDouble("Peso (kg): ");
-                int id = s.criarEncomenda(idCliente, idOrigem, idDestino, desc, peso);
-                if (id == -1) {
-                    std::cout << "Nao foi possivel criar a encomenda. "
-                                 "Verifique os dados (depositos distintos, peso > 0, ...).\n";
-                } else {
-                    std::cout << "Encomenda #" << id << " criada com sucesso.\n";
-                }
-                break;
-            }
-            case 3: {
+    if (indiceOrigem < 0 || indiceOrigem >= static_cast<int>(depositos.size())) {
+        std::cout << "Indice de origem invalido.\n";
+        return encomenda;
+    }
+
+    int indiceDestino = utils.lerInteiro("Escolha o indice do deposito de destino: ");
+
+    if (indiceDestino < 0 || indiceDestino >= static_cast<int>(depositos.size())) {
+        std::cout << "Indice de destino invalido.\n";
+        return encomenda;
+    }
+
+    encomenda.idDepOrigem = depositos[indiceOrigem].id;
+    encomenda.idDepDestino = depositos[indiceDestino].id;
+
+    encomenda.descricao = utils.lerLinha("Descricao: ");
+    encomenda.peso = utils.lerDouble("Peso (kg): ");
+
+    return encomenda;
+}
 
 
-                std::string inputCliente = utils.lerLinha("Contacto do Cliente: ");
-                int idCliente = s.procurarClientePorIdOuContacto(inputCliente);
-                if (idCliente == -1) {
-                    std::cout << "Cliente nao encontrado.\n";
-                    break;
-                }
+int ClienteView::getIdCliente() {
+    UtilsView utils;
 
-                const auto& encomendas = s.getEncomendas();
-                std::vector<int> clientIdx;
-                for (size_t i = 0; i < encomendas.size(); ++i) {
-                    if (encomendas[i].getIdCliente() == idCliente) clientIdx.push_back(static_cast<int>(i));
-                }
-                if (clientIdx.empty()) {
-                    std::cout << "Sem encomendas para este cliente.\n";
-                    break;
-                }
-                std::cout << "Encomendas do cliente:\n";
-                for (size_t k = 0; k < clientIdx.size(); ++k) {
-                    const auto& e = encomendas[clientIdx[k]];
-                    std::cout << "  [" << k << "] " << e.getDescricao() << " | " << utils.nomeEstado(e.getEstado()) << "\n";
-                }
-                int escolha = utils.lerInteiro("Escolha o indice da encomenda para consultar: ");
-                if (escolha < 0 || escolha >= static_cast<int>(clientIdx.size())) {
-                    std::cout << "Indice invalido.\n";
-                    break;
-                }
-                int idEnc = encomendas[clientIdx[escolha]].getId();
-                std::string r  = s.consultarEstadoEncomenda(idEnc, idCliente);
-                if (r.empty()) std::cout << "Encomenda nao encontrada ou nao pertence ao cliente.\n";
-                else           std::cout << r << "\n";
-                break;
-            }
-            case 4: {
+    return utils.lerInteiro("ID do Cliente: ");
+}
 
-                std::string inputCliente = utils.lerLinha("Contacto do Cliente: ");
-                int idCliente = s.procurarClientePorIdOuContacto(inputCliente);
-                if (idCliente == -1) {
-                    std::cout << "Cliente nao encontrado.\n";
-                    break;
-                }
+int ClienteView::getIdEncomenda() {
+    UtilsView utils;
 
-                const auto& encomendas = s.getEncomendas();
-                std::vector<int> clientIdx;
-                for (size_t i = 0; i < encomendas.size(); ++i) {
-                    if (encomendas[i].getIdCliente() == idCliente) clientIdx.push_back(static_cast<int>(i));
-                }
-                if (clientIdx.empty()) {
-                    std::cout << "Sem encomendas para este cliente.\n";
-                    break;
-                }
-                std::cout << "Encomendas do cliente:\n";
-                for (size_t k = 0; k < clientIdx.size(); ++k) {
-                    const auto& e = encomendas[clientIdx[k]];
-                    std::cout << "  [" << k << "] " << e.getDescricao() << " | " << utils.nomeEstado(e.getEstado()) << "\n";
-                }
-                int escolha = utils.lerInteiro("Escolha o indice da encomenda a cancelar: ");
-                if (escolha < 0 || escolha >= static_cast<int>(clientIdx.size())) {
-                    std::cout << "Indice invalido.\n";
-                    break;
-                }
-                int idEnc = encomendas[clientIdx[escolha]].getId();
-                if (s.cancelarEncomenda(idEnc)) std::cout << "Encomenda cancelada.\n";
-                else                            std::cout << "Nao foi possivel cancelar ou encomenda nao existe.\n";
-                break;
-            }
-            case 0:
-                sair = true;
-                break;
-            default:
-                std::cout << "Opcao invalida.\n";
-        }
+    return utils.lerInteiro("ID da Encomenda: ");
+}
+
+void ClienteView::printCliente(const ClienteOutDto& cliente) {
+    std::cout << "\n=== Cliente ===\n";
+    std::cout << "ID: " << cliente.id << "\n";
+    std::cout << "Nome: " << cliente.nome << "\n";
+    std::cout << "Contacto: " << cliente.contacto << "\n";
+}
+
+void ClienteView::printEncomenda(const EncomendaOutDto& encomenda) {
+    UtilsView utils;
+
+    std::cout << "\n=== Encomenda ===\n";
+    std::cout << "ID: " << encomenda.id << "\n";
+    std::cout << "Cliente: " << encomenda.idCliente << "\n";
+    std::cout << "Deposito origem: " << encomenda.idDepOrigem << "\n";
+    std::cout << "Deposito destino: " << encomenda.idDepDestino << "\n";
+    std::cout << "Descricao: " << encomenda.descricao << "\n";
+    std::cout << "Peso: " << encomenda.peso << " kg\n";
+    std::cout << "Estado: " << utils.nomeEstado(encomenda.estado) << "\n";
+
+    if (encomenda.idVeiculo == -1) {
+        std::cout << "Veiculo: sem veiculo atribuido\n";
+    } else {
+        std::cout << "ID Veiculo: " << encomenda.idVeiculo << "\n";
+    }
+}
+
+void ClienteView::printEncomendas(const std::vector<EncomendaOutDto>& encomendas) {
+    UtilsView utils;
+
+    std::cout << "\n=== Encomendas ===\n";
+
+    if (encomendas.empty()) {
+        std::cout << "Sem encomendas.\n";
+        return;
+    }
+
+    for (const EncomendaOutDto& e : encomendas) {
+        std::cout << "#" << e.id
+                  << " | Cliente: " << e.idCliente
+                  << " | " << e.idDepOrigem << " -> " << e.idDepDestino
+                  << " | " << e.descricao
+                  << " | Peso: " << e.peso
+                  << " kg"
+                  << " | Estado: " << utils.nomeEstado(e.estado)
+                  << "\n";
     }
 }
 

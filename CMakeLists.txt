@@ -92,5 +92,13 @@ add_executable(GestaoEncomendas main.cpp
 
         src/service/Recomendacao.cpp
         src/service/Recomendacao.h
+        src/View/sources/ClienteView.cpp
+
+        src/View/sources/UtilsView.cpp
+        src/View/sources/AdministradorView.cpp
+        src/mappers/sources/ClienteMapper.cpp
+        src/mappers/sources/DepositoMapper.cpp
+        src/mappers/sources/EncomendaMapper.cpp
+        src/mappers/sources/VeiculoMapper.cpp
 )
 

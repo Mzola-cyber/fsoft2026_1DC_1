@@ -108,7 +108,7 @@ void Sistema::runAdministrador() {
     bool sair = false;
 
     while (!sair) {
-        std::cout << "\n===== AREA ADMINISTRADOR =====\n";
+        std::cout << "\n===== MENU ADMINISTRADOR =====\n";
         std::cout << "1. Adicionar deposito\n";
         std::cout << "2. Adicionar veiculo\n";
         std::cout << "3. Remover veiculo\n";
@@ -215,8 +215,8 @@ void Sistema::run() {
     bool sair = false;
     while (!sair) {
         std::cout << "\n--- Menu Principal ---\n"
-                  << "1. Area Cliente\n"
-                  << "2. Area Administrador\n"
+                  << "1. Menu Cliente\n"
+                  << "2. Menu Administrador\n"
                   << "0. Sair\n";
         int op = utils.lerInteiro("Opcao: ");
     switch (op) {
