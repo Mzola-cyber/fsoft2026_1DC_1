@@ -41,9 +41,10 @@ void Sistema::runCliente() {
                 ClienteInDto dto=clienteView.getCliente();
                 ClienteOutDto cliente=registarCliente(dto);
                 if (cliente.id==0){
-                    std::cout<<"não foi possivel registar o cliente.\n";
+                    std::cout<<"Nao foi possivel registar o cliente.\n";
                 } else {
                     clienteView.printCliente(cliente);
+                    std::cout << " #Cliente Registrado com sucesso" << "\n";
                 }
                 break;
             }
@@ -56,13 +57,13 @@ void Sistema::runCliente() {
                 }
 
                 EncomendaInDto dto = clienteView.getEncomenda(depositos);
-
                 EncomendaOutDto encomenda = criarEncomenda(dto);
 
                 if (encomenda.id == 0) {
                     std::cout << "Nao foi possivel criar encomenda.\n";
                 } else {
                     clienteView.printEncomenda(encomenda);
+                    std::cout << " #Encomenda Criada com sucesso" << "\n";
                 }
 
                 break;
@@ -128,6 +129,7 @@ void Sistema::runAdministrador() {
                     std::cout << "Nao foi possivel adicionar deposito.\n";
                 } else {
                     adminView.printDeposito(deposito);
+                    std::cout << " #Deposito Adicionado com sucesso" << "\n";
                 }
 
                 break;
@@ -141,6 +143,7 @@ void Sistema::runAdministrador() {
                     std::cout << "Nao foi possivel adicionar veiculo.\n";
                 } else {
                     adminView.printVeiculo(veiculo);
+                    std::cout << " #Veiculo Adicionado com sucesso" << "\n";
                 }
 
                 break;
@@ -363,6 +366,16 @@ EncomendaOutDto Sistema::criarEncomenda(const EncomendaInDto& dto) {
     if (encomenda == nullptr) {
         return EncomendaOutDto{};
     }
+
+    int idVeiculo = Recomendacao::recomendarEReservar(veiculosRepository, dto.peso);
+
+    if (idVeiculo != -1) {
+        encomenda->atribuirVeiculo(idVeiculo);
+        encomenda->atualizarEstado(EstadoEncomenda::ATRIBUIDA);
+    } else {
+        encomenda->atualizarEstado(EstadoEncomenda::PENDENTE);
+    }
+
 
     return EncomendaMapper::toOutDto(*encomenda);
 }

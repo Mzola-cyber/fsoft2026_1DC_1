@@ -13,7 +13,7 @@ int ClienteRepository::adicionar(const std::string& nome, const std::string& con
         if (c.getContactoCliente() == contacto) return -1;
     }
 
-    int id = proximoId++;
+    int id = 1000 + proximoId++;
     clientes.emplace_back(id, nome, contacto);
     return id;
 }

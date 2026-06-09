@@ -43,7 +43,7 @@ EncomendaInDto ClienteView::getEncomenda(const std::vector<DepositoOutDto>& depo
         std::cout << "[" << i << "] "
                   << depositos[i].nome
                   << " | " << depositos[i].localizacao
-                  << " | cap: " << depositos[i].capacidadeMax
+                  << " | capacidade: " << depositos[i].capacidadeMax
                   << "\n";
     }
 
@@ -88,6 +88,8 @@ void ClienteView::printCliente(const ClienteOutDto& cliente) {
     std::cout << "ID: " << cliente.id << "\n";
     std::cout << "Nome: " << cliente.nome << "\n";
     std::cout << "Contacto: " << cliente.contacto << "\n";
+
+
 }
 
 void ClienteView::printEncomenda(const EncomendaOutDto& encomenda) {

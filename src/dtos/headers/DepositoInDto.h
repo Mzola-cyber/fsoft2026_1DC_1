@@ -1,9 +1,13 @@
 //
 // Created by Mário Figueira on 04/06/2026.
 //
+#include<string>
+using namespace std;
 
 #ifndef GESTAOENCOMENDAS_DEPOSITOINDTO_H
 #define GESTAOENCOMENDAS_DEPOSITOINDTO_H
+
+
 class DepositoInDto {
 public:
     std::string nome;
