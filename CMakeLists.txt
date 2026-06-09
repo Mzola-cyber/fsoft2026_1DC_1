@@ -100,5 +100,7 @@ add_executable(GestaoEncomendas main.cpp
         src/mappers/sources/DepositoMapper.cpp
         src/mappers/sources/EncomendaMapper.cpp
         src/mappers/sources/VeiculoMapper.cpp
+        src/View/sources/MenuView.cpp
+        src/View/headers/MenuView.h
 )
 

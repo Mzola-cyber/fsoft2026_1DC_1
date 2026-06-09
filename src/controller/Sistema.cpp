@@ -11,6 +11,7 @@
 #include "../View/headers/AdministradorView.h"
 #include "../View/headers/UtilsView.h"
 #include "service/Recomendacao.h"
+#include "../View/headers/MenuView.h"
 
 Sistema::Sistema()
     :clientesRepository(),
@@ -22,206 +23,148 @@ Sistema::Sistema()
 
 
 void Sistema::runCliente() {
+
+    MenuView menuView;
     ClienteView clienteView;
-    UtilsView utils;
     bool sair = false;
-
     while (!sair) {
-        std::cout << "\n--- Menu Cliente ---\n"
-
-        << "1. Registar novo cliente\n"
-        << "2. Criar encomenda\n"
-        << "3. Consultar estado de encomenda\n"
-        << "4. Cancelar encomenda\n"
-        << "0. Voltar\n";
-        int op = utils.lerInteiro("Opcao: ");
-
-        switch (op) {
+        int opcao = menuView.menuCliente();
+        switch (opcao) {
             case 1: {
-                ClienteInDto dto=clienteView.getCliente();
-                ClienteOutDto cliente=registarCliente(dto);
-                if (cliente.id==0){
-                    std::cout<<"Nao foi possivel registar o cliente.\n";
+                ClienteInDto dto = clienteView.getCliente();
+                ClienteOutDto cliente = registarCliente(dto);
+                if (cliente.id == 0) {
+                    menuView.printMensagem("Nao foi possivel registar cliente.");
                 } else {
                     clienteView.printCliente(cliente);
-                    std::cout << " #Cliente Registrado com sucesso" << "\n";
                 }
                 break;
             }
-            case 2:{
+            case 2: {
                 std::vector<DepositoOutDto> depositos = getDepositos();
-
                 if (depositos.empty()) {
-                    std::cout << "Nao existem depositos disponiveis.\n";
+                    menuView.printMensagem("Nao existem depositos disponiveis.");
                     break;
                 }
 
                 EncomendaInDto dto = clienteView.getEncomenda(depositos);
                 EncomendaOutDto encomenda = criarEncomenda(dto);
-
                 if (encomenda.id == 0) {
-                    std::cout << "Nao foi possivel criar encomenda.\n";
+                    menuView.printMensagem("Nao foi possivel criar encomenda.");
                 } else {
                     clienteView.printEncomenda(encomenda);
-                    std::cout << " #Encomenda Criada com sucesso" << "\n";
                 }
-
                 break;
             }
-
             case 3: {
-                int idCliente=clienteView.getIdCliente();
-                int idEncomenda=clienteView.getIdEncomenda();
-                std::string resultado=consultarEstadoEncomenda(idEncomenda,idCliente);
+                int idCliente = clienteView.getIdCliente();
+                int idEncomenda = clienteView.getIdEncomenda();
+                std::string resultado = consultarEstadoEncomenda(idEncomenda, idCliente);
                 if (resultado.empty()) {
-                    std::cout<<"Encomenda nao encontrada ou nao pertence a este cliente.\n";
+                    menuView.printMensagem("Encomenda nao encontrada ou nao pertence ao cliente.");
                 } else {
-                   std::cout<<resultado<<std::endl;
+                    menuView.printMensagem(resultado);
                 }
                 break;
             }
-
             case 4: {
-                int idEncomenda=clienteView.getIdEncomenda();
+                int idEncomenda = clienteView.getIdEncomenda();
                 if (cancelarEncomenda(idEncomenda)) {
-                    std::cout<<"Encomenda cancelada com sucesso.\n";
-
-                }else{
-                    std::cout<<"Não foi possivel cancelar a encomenda.\n";
+                    menuView.printMensagem("Encomenda cancelada com sucesso.");
+                } else {
+                    menuView.printMensagem("Nao foi possivel cancelar a encomenda.");
                 }
                 break;
             }
-
             case 0:
                 sair = true;
                 break;
             default:
-                std::cout << "Opcao invalida.\n";
+                menuView.printOpcaoInvalida();
+                break;
         }
     }
 }
 
-
 void Sistema::runAdministrador() {
- UtilsView utils;
+    MenuView menuView;
     AdministradorView adminView;
-
+    UtilsView utilsView;
     bool sair = false;
-
     while (!sair) {
-        std::cout << "\n===== MENU ADMINISTRADOR =====\n";
-        std::cout << "1. Adicionar deposito\n";
-        std::cout << "2. Adicionar veiculo\n";
-        std::cout << "3. Remover veiculo\n";
-        std::cout << "4. Remover cliente\n";
-        std::cout << "5. Avancar estado de encomenda\n";
-        std::cout << "6. Consultar informacao global\n";
-        std::cout << "0. Voltar\n";
-
-        int opcao = utils.lerInteiro("Opcao: ");
-
+        int opcao = menuView.menuAdministrador();
         switch (opcao) {
             case 1: {
                 DepositoInDto dto = adminView.getDeposito();
                 DepositoOutDto deposito = adicionarDeposito(dto);
-
                 if (deposito.id == 0) {
-                    std::cout << "Nao foi possivel adicionar deposito.\n";
+                    menuView.printMensagem("Nao foi possivel adicionar deposito.");
                 } else {
                     adminView.printDeposito(deposito);
-                    std::cout << " #Deposito Adicionado com sucesso" << "\n";
                 }
-
                 break;
             }
-
             case 2: {
                 VeiculoInDto dto = adminView.getVeiculo();
                 VeiculoOutDto veiculo = adicionarVeiculo(dto);
-
                 if (veiculo.idVeiculo == 0) {
-                    std::cout << "Nao foi possivel adicionar veiculo.\n";
+                    menuView.printMensagem("Nao foi possivel adicionar veiculo.");
                 } else {
                     adminView.printVeiculo(veiculo);
-                    std::cout << " #Veiculo Adicionado com sucesso" << "\n";
                 }
-
                 break;
             }
-
             case 3: {
                 int idVeiculo = adminView.getIdVeiculo();
-
                 if (removerVeiculo(idVeiculo)) {
-                    std::cout << "Veiculo removido com sucesso.\n";
+                    menuView.printMensagem("Veiculo removido com sucesso.");
                 } else {
-                    std::cout << "Nao foi possivel remover o veiculo.\n";
+                    menuView.printMensagem("Nao foi possivel remover o veiculo.");
                 }
-
                 break;
             }
-
             case 4: {
                 int idCliente = adminView.getIdCliente();
-
                 if (removerCliente(idCliente)) {
-                    std::cout << "Cliente removido com sucesso.\n";
+                    menuView.printMensagem("Cliente removido com sucesso.");
                 } else {
-                    std::cout << "Nao foi possivel remover o cliente.\n";
+                    menuView.printMensagem("Nao foi possivel remover o cliente.");
                 }
-
                 break;
             }
-
             case 5: {
                 int idEncomenda = adminView.getIdEncomenda();
-
                 if (avancarEstadoEncomenda(idEncomenda)) {
-                    std::cout << "Estado da encomenda avancado com sucesso.\n";
+                    menuView.printMensagem("Estado da encomenda avancado com sucesso.");
                 } else {
-                    std::cout << "Nao foi possivel avancar o estado da encomenda.\n";
+                    menuView.printMensagem("Nao foi possivel avancar o estado da encomenda.");
                 }
-
                 break;
             }
-
             case 6: {
-                utils.imprimirSeparador();
-
+                utilsView.imprimirSeparador();
                 adminView.printClientes(getClientes());
                 adminView.printDepositos(getDepositos());
                 adminView.printVeiculos(getVeiculos());
                 adminView.printEncomendas(getEncomendas());
-
-                utils.imprimirSeparador();
-
+                utilsView.imprimirSeparador();
                 break;
             }
-
             case 0:
                 sair = true;
                 break;
-
             default:
-                std::cout << "Opcao invalida.\n";
+                menuView.printOpcaoInvalida();
+                break;
         }
     }
 }
 
 void Sistema::run() {
-    UtilsView utils;
-    std::cout << "================================================\n"
-              << "  Sistema de Gestao de Encomendas\n"
-              << "  FDS 2025/2026 - Grupo 01\n"
-              << "================================================\n";
-
+   MenuView menuview;
     bool sair = false;
     while (!sair) {
-        std::cout << "\n--- Menu Principal ---\n"
-                  << "1. Menu Cliente\n"
-                  << "2. Menu Administrador\n"
-                  << "0. Sair\n";
-        int op = utils.lerInteiro("Opcao: ");
+        int op = menuview.menuPrincipal();
     switch (op) {
         case 1:
             runCliente();
@@ -233,7 +176,7 @@ void Sistema::run() {
             sair = true;
             break;
         default:
-            std::cout << "Opcao invalida!\n";
+            menuview.printOpcaoInvalida();
     }
     }
 }
