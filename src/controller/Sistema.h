@@ -23,6 +23,11 @@
 #include "../dtos/headers/EncomendaInDto.h"
 #include "../dtos/headers/EncomendaOutDto.h"
 
+#include "service/headers/EncomendaService.h"
+#include "service/headers/ClienteService.h"
+#include "service/headers/VeiculoService.h"
+#include "service/headers/DepositoService.h"
+
 class Sistema {
 private:
 
@@ -30,6 +35,10 @@ private:
     DepositoRepository     depositosRepository;
     VeiculoRepository      veiculosRepository;
     EncomendaRepository    encomendaRepository;
+    EncomendaService encomendaService;
+    ClienteService clienteService;
+    VeiculoService veiculoService;
+    DepositoService depositoService;
     Cliente*   procurarCliente(int id);
     Deposito*  procurarDeposito(int id);
     Veiculo*   procurarVeiculo(int idVeiculo);
@@ -43,6 +52,8 @@ public:
     ClienteOutDto registarCliente(const ClienteInDto& dto);
     bool removerCliente(int idCliente);
     int procurarClientePorIdOuContacto(const std::string& idOuContacto) const;
+    bool verificarEncomendaCliente(int idEncomenda, int idCliente);
+    bool verificarCliente(int idCliente, const std::string& contacto);
 
     DepositoOutDto adicionarDeposito(const DepositoInDto& dto);
 

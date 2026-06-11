@@ -10,16 +10,24 @@
 #include "../View/headers/ClienteView.h"
 #include "../View/headers/AdministradorView.h"
 #include "../View/headers/UtilsView.h"
-#include "service/Recomendacao.h"
 #include "../View/headers/MenuView.h"
 
 Sistema::Sistema()
-    :clientesRepository(),
-     depositosRepository(),
-     veiculosRepository(),
-     encomendaRepository()
-{
-}
+    : encomendaService(
+        encomendaRepository,
+        clientesRepository,
+        depositosRepository,
+        veiculosRepository
+    ),clienteService(
+        clientesRepository,
+        encomendaRepository
+      ), veiculoService(
+        veiculosRepository,
+        encomendaRepository
+      ), depositoService(
+        depositosRepository)
+
+{}
 
 
 void Sistema::runCliente() {
@@ -37,6 +45,7 @@ void Sistema::runCliente() {
                     menuView.printMensagem("Nao foi possivel registar cliente.");
                 } else {
                     clienteView.printCliente(cliente);
+                    menuView.printMensagem("Cliente Registrado com sucesso");
                 }
                 break;
             }
@@ -53,6 +62,7 @@ void Sistema::runCliente() {
                     menuView.printMensagem("Nao foi possivel criar encomenda.");
                 } else {
                     clienteView.printEncomenda(encomenda);
+                    menuView.printMensagem("Encomenda Registrada com sucesso");
                 }
                 break;
             }
@@ -68,7 +78,20 @@ void Sistema::runCliente() {
                 break;
             }
             case 4: {
+                int idCliente = clienteView.getIdCliente();
+                ClienteInDto c = clienteView.getContacto();
                 int idEncomenda = clienteView.getIdEncomenda();
+
+                if (!verificarCliente(idCliente, c.contacto)) {
+                    menuView.printMensagem("Cliente ou contacto invalido.");
+                    break;
+                }
+
+                if (!verificarEncomendaCliente(idEncomenda, idCliente)) {
+                    menuView.printMensagem("Encomenda nao pertence ao cliente.");
+                    break;
+                }
+
                 if (cancelarEncomenda(idEncomenda)) {
                     menuView.printMensagem("Encomenda cancelada com sucesso.");
                 } else {
@@ -101,6 +124,7 @@ void Sistema::runAdministrador() {
                     menuView.printMensagem("Nao foi possivel adicionar deposito.");
                 } else {
                     adminView.printDeposito(deposito);
+                    menuView.printMensagem("Deposito Adicionado com sucesso");
                 }
                 break;
             }
@@ -111,6 +135,7 @@ void Sistema::runAdministrador() {
                     menuView.printMensagem("Nao foi possivel adicionar veiculo.");
                 } else {
                     adminView.printVeiculo(veiculo);
+                    menuView.printMensagem("Veiculo Adicionado com sucesso");
                 }
                 break;
             }
@@ -181,46 +206,14 @@ void Sistema::run() {
     }
 }
 
-Cliente* Sistema::procurarCliente(int id) {
-    return clientesRepository.procurar(id);
-}
-
-Deposito* Sistema::procurarDeposito(int id) {
-    return depositosRepository.procurar(id);
-}
-
-Veiculo* Sistema::procurarVeiculo(int idVeiculo) {
-    return veiculosRepository.procurar(idVeiculo);
-}
-
-Encomenda* Sistema::procurarEncomenda(int id) {
-    return encomendaRepository.procurar(id);
-}
 
 ClienteOutDto Sistema::registarCliente(const ClienteInDto& dto) {
-    int id = clientesRepository.adicionar(dto.nome, dto.contacto);
-
-    Cliente* cliente = clientesRepository.procurar(id);
-
-    if (cliente == nullptr) {
-        return ClienteOutDto{};
-    }
-
-    return ClienteMapper::toOutDto(*cliente);
+    return clienteService.registarCliente(dto);
 }
 
 
 bool Sistema::removerCliente(int idCliente) {
-    for (const auto& encomenda : encomendaRepository.getAll()) {
-        if (encomenda.getIdCliente() == idCliente) {
-            EstadoEncomenda estado = encomenda.getEstado();
-            if (estado != EstadoEncomenda::ENTREGUE && estado != EstadoEncomenda::CANCELADA) {
-                return false;
-            }
-        }
-    }
-
-    return clientesRepository.remover(idCliente);
+  return clienteService.removerCliente(idCliente);
 }
 
 int Sistema::procurarClientePorIdOuContacto(const std::string& idOuContacto) const {
@@ -242,124 +235,27 @@ int Sistema::procurarClientePorIdOuContacto(const std::string& idOuContacto) con
 }
 
 DepositoOutDto Sistema::adicionarDeposito(const DepositoInDto& dto) {
-    int id=depositosRepository.adicionar(dto.nome,dto.localizacao,dto.capacidadeMax);
-
-    Deposito* deposito=depositosRepository.procurar(id);
-    if (deposito==nullptr) {
-        return DepositoOutDto{};
-    }
-    return DepositoMapper::toOutDto(*deposito);
+    return depositoService.adicionarDeposito(dto);
 }
 
 VeiculoOutDto Sistema::adicionarVeiculo(const VeiculoInDto& dto) {
-
-    int id=veiculosRepository.adicionar(dto.matricula,dto.capacidadeMax);
-        Veiculo* veiculo=veiculosRepository.procurar(id);
-        if (veiculo==nullptr) {
-            return VeiculoOutDto{};
-        }
-        return VeiculoMapper::toOutDto(*veiculo);
+    return veiculoService.adicionarVeiculo(dto);
 }
 
 bool Sistema::removerVeiculo(int idVeiculo) {
-    for (const auto& encomenda : encomendaRepository.getAll()) {
-        if (encomenda.getIdVeiculo() == idVeiculo) {
-            EstadoEncomenda estado = encomenda.getEstado();
-            if (estado == EstadoEncomenda::ATRIBUIDA ||
-                estado == EstadoEncomenda::EM_TRANSPORTE) {
-                return false;
-            }
-        }
-    }
-
-    return veiculosRepository.remover(idVeiculo);
+    return veiculoService.removerVeiculo(idVeiculo);
 }
 
 EncomendaOutDto Sistema::criarEncomenda(const EncomendaInDto& dto) {
-    if (dto.idDepOrigem == dto.idDepDestino) {
-        return EncomendaOutDto{};
-    }
-
-    if (dto.peso <= 0 || dto.descricao.empty()) {
-        return EncomendaOutDto{};
-    }
-
-    if (clientesRepository.procurar(dto.idCliente) == nullptr) {
-        return EncomendaOutDto{};
-    }
-
-    if (depositosRepository.procurar(dto.idDepOrigem) == nullptr) {
-        return EncomendaOutDto{};
-    }
-
-    if (depositosRepository.procurar(dto.idDepDestino) == nullptr) {
-        return EncomendaOutDto{};
-    }
-
-    int id = encomendaRepository.adicionar(
-        dto.idCliente,
-        dto.idDepOrigem,
-        dto.idDepDestino,
-        dto.descricao,
-        dto.peso
-    );
-
-    Encomenda* encomenda = encomendaRepository.procurar(id);
-
-    if (encomenda == nullptr) {
-        return EncomendaOutDto{};
-    }
-
-    int idVeiculo = Recomendacao::recomendarEReservar(veiculosRepository, dto.peso);
-
-    if (idVeiculo != -1) {
-        encomenda->atribuirVeiculo(idVeiculo);
-        encomenda->atualizarEstado(EstadoEncomenda::ATRIBUIDA);
-    } else {
-        encomenda->atualizarEstado(EstadoEncomenda::PENDENTE);
-    }
-
-
-    return EncomendaMapper::toOutDto(*encomenda);
+    return encomendaService.criarEncomenda(dto);
 }
 
 bool Sistema::avancarEstadoEncomenda(int idEncomenda) {
-    Encomenda* e = procurarEncomenda(idEncomenda);
-    if (e == nullptr) return false;
-
-    switch (e->getEstado()) {
-        case EstadoEncomenda::ATRIBUIDA:
-            return e->atualizarEstado(EstadoEncomenda::EM_TRANSPORTE);
-        case EstadoEncomenda::EM_TRANSPORTE: {
-            bool ok = e->atualizarEstado(EstadoEncomenda::ENTREGUE);
-            if (ok) {
-                veiculosRepository.libertarVeiculo(e->getIdVeiculo());
-            }
-            return ok;
-        }
-        default:
-            return false;
-    }
+    return encomendaService.avancarEstadoEncomenda(idEncomenda);
 }
 
 bool Sistema::cancelarEncomenda(int idEncomenda) {
-    Encomenda* e = procurarEncomenda(idEncomenda);
-    if (e == nullptr) return false;
-
-    EstadoEncomenda atual = e->getEstado();
-    if (atual == EstadoEncomenda::ENTREGUE ||
-        atual == EstadoEncomenda::CANCELADA) {
-        return false;
-    }
-
-    bool ok = e->atualizarEstado(EstadoEncomenda::CANCELADA);
-    if (ok) {
-        int idVeiculo = e->getIdVeiculo();
-        if (idVeiculo != -1) {
-            veiculosRepository.libertarVeiculo(idVeiculo);
-        }
-    }
-    return ok;
+    return encomendaService.cancelarEncomenda(idEncomenda);
 }
 
 std::string Sistema::obterMatriculaVeiculo(int idVeiculo) const {
@@ -370,23 +266,7 @@ std::string Sistema::obterMatriculaVeiculo(int idVeiculo) const {
 
 std::string Sistema::consultarEstadoEncomenda(int idEncomenda,
                                               int idCliente) const {
-    const Encomenda* e = encomendaRepository.procurarConst(idEncomenda);
-    if (e == nullptr) return "";
-
-    if (e->getIdCliente() != idCliente) return "";
-
-    std::string estado;
-    switch (e->getEstado()) {
-        case EstadoEncomenda::REGISTADA:     estado = "Registada"; break;
-        case EstadoEncomenda::PENDENTE:      estado = "Pendente"; break;
-        case EstadoEncomenda::ATRIBUIDA:     estado = "Atribuida"; break;
-        case EstadoEncomenda::EM_TRANSPORTE: estado = "Em Transporte"; break;
-        case EstadoEncomenda::ENTREGUE:      estado = "Entregue"; break;
-        case EstadoEncomenda::CANCELADA:     estado = "Cancelada"; break;
-    }
-
-    return "Encomenda #" + std::to_string(e->getId()) +
-           " - Estado: " + estado;
+    return encomendaService.consultarEstadoEncomenda(idEncomenda, idCliente);
 }
  std::vector<ClienteOutDto> Sistema::getClientes() const {
     std::vector<ClienteOutDto> resultado;
@@ -426,4 +306,18 @@ std::string Sistema::consultarEstadoEncomenda(int idEncomenda,
         resultado.push_back(EncomendaMapper::toOutDto(encomenda));
     }
     return resultado;
+}
+bool Sistema::verificarCliente(int idCliente, const std::string& contacto) {
+    Cliente* c = clientesRepository.procurar(idCliente);
+
+    if (!c) return false;
+
+    return c->getContactoCliente() == contacto;
+}
+bool Sistema::verificarEncomendaCliente(int idEncomenda, int idCliente) {
+    Encomenda* e = encomendaRepository.procurar(idEncomenda);
+
+    if (!e) return false;
+
+    return e->getIdCliente() == idCliente;
 }

@@ -18,7 +18,12 @@ public:
     bool remover(int id);
     Veiculo* procurar(int id);
      const Veiculo* procurarConst(int id) const;
-     const std::vector<Veiculo>& getAll() const;
+    // leitura
+    const std::vector<Veiculo>& getAll() const;
+
+    // modificação ADICIONAR
+    std::vector<Veiculo>& getAll();
+
 };
 
 #endif

@@ -9,7 +9,8 @@ public:
     int idCliente;
     int idDepOrigem;
     int idDepDestino;
-
+    int indiceDestino;
+    int indiceOrigem;
     std::string descricao;
     double peso;
 };

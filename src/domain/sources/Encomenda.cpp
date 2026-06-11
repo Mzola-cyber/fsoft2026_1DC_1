@@ -72,6 +72,14 @@ bool Encomenda::atualizarEstado(EstadoEncomenda novoestado) {
     }
     return false;
 }
+int Encomenda::getIdDepositoDestino() const {
+    return idDepDestino;
+}
+
+int Encomenda::getIdDepositoOrigem() const {
+    return idDepOrigem;
+}
+
 
 double Encomenda::getPeso() const {
     return getpeso();
@@ -84,5 +92,7 @@ int Encomenda::getIdDepOrigem() const {
 int Encomenda::getIdDepDestino() const {
     return idDepDestino;
 }
+
+
 
 

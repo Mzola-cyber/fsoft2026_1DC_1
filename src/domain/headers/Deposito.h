@@ -10,6 +10,7 @@ private:
     std::string nome;
     std::string localizacao;
     int capacidadeMax;
+    double capacidadeAtual;
 
 public:
     Deposito(int id, std::string nome, std::string localizacao, int capacidadeMax);
@@ -17,6 +18,9 @@ public:
     std::string getNome() const;
     std::string getLocalizacao() const;
     int getCapacidadeMax() const;
+    double getCapacidadeAtual() const;
+    void diminuirCapacidade(double peso);
+    void aumentarCapacidade(double peso);
 };
 
 #endif

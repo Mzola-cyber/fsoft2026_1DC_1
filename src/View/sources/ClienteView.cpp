@@ -23,6 +23,12 @@ ClienteInDto ClienteView::getCliente() {
     cliente.contacto = utils.lerLinha("Contacto Telefonico: ");
 return cliente;
 }
+ClienteInDto ClienteView::getContacto(){
+    UtilsView utils;
+    ClienteInDto cliente;
+    cliente.contacto = utils.lerLinha("Contacto Telefonico: ");
+return cliente;
+}
 
 EncomendaInDto ClienteView::getEncomenda(const std::vector<DepositoOutDto>& depositos) {
     UtilsView utils;
@@ -47,22 +53,22 @@ EncomendaInDto ClienteView::getEncomenda(const std::vector<DepositoOutDto>& depo
                   << "\n";
     }
 
-    int indiceOrigem = utils.lerInteiro("Escolha o indice do deposito de origem: ");
+    encomenda.indiceOrigem = utils.lerInteiro("Escolha o indice do deposito de origem: ");
 
-    if (indiceOrigem < 0 || indiceOrigem >= static_cast<int>(depositos.size())) {
+    if (encomenda.indiceOrigem < 0 || encomenda.indiceOrigem >= static_cast<int>(depositos.size())) {
         std::cout << "Indice de origem invalido.\n";
         return encomenda;
     }
 
-    int indiceDestino = utils.lerInteiro("Escolha o indice do deposito de destino: ");
+    encomenda.indiceDestino = utils.lerInteiro("Escolha o indice do deposito de destino: ");
 
-    if (indiceDestino < 0 || indiceDestino >= static_cast<int>(depositos.size())) {
+    if (encomenda.indiceDestino < 0 || encomenda.indiceDestino >= static_cast<int>(depositos.size())) {
         std::cout << "Indice de destino invalido.\n";
         return encomenda;
     }
 
-    encomenda.idDepOrigem = depositos[indiceOrigem].id;
-    encomenda.idDepDestino = depositos[indiceDestino].id;
+    encomenda.idDepOrigem = depositos[encomenda.indiceOrigem].id;
+    encomenda.idDepDestino = depositos[encomenda.indiceDestino].id;
 
     encomenda.descricao = utils.lerLinha("Descricao: ");
     encomenda.peso = utils.lerDouble("Peso (kg): ");
@@ -100,7 +106,6 @@ void ClienteView::printEncomenda(const EncomendaOutDto& encomenda) {
     std::cout << "Cliente: " << encomenda.idCliente << "\n";
     std::cout << "Deposito origem: " << encomenda.idDepOrigem << "\n";
     std::cout << "Deposito destino: " << encomenda.idDepDestino << "\n";
-    std::cout << "Descricao: " << encomenda.descricao << "\n";
     std::cout << "Peso: " << encomenda.peso << " kg\n";
     std::cout << "Estado: " << utils.nomeEstado(encomenda.estado) << "\n";
 

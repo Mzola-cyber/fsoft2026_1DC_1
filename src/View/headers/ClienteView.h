@@ -13,6 +13,7 @@ class ClienteView {
 public:
     ClienteView();
     ClienteInDto getCliente();
+    ClienteInDto getContacto();
     EncomendaInDto getEncomenda(const std::vector<DepositoOutDto>& depositos);
     int getIdEncomenda();
     int getIdCliente();

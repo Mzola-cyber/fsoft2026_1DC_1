@@ -2,7 +2,7 @@
 #include <algorithm>
 
 DepositoRepository::DepositoRepository() {
-    adicionar("Depodito Trindade", "Porto Centro", 5000);
+    adicionar("Deposito Trindade", "Porto Centro", 5000);
     adicionar("Deposito Luanda", "Porto Sudoeste", 8000);
     adicionar("Deposito Cazenga", "Porto Oeste", 6000);
     adicionar("Deposito Combatentes", "Porto Este", 7000);

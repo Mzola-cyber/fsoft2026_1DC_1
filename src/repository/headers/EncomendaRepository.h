@@ -17,7 +17,13 @@ public:
     bool remover(int id);
     Encomenda* procurar(int id);
     const Encomenda* procurarConst(int id) const;
+
+    //leitura
     const std::vector<Encomenda>& getAll() const;
+
+    //modificação (ADICIONAR)
+    std::vector<Encomenda>& getAll();
+
 };
 
 #endif

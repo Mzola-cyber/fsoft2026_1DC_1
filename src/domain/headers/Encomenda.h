@@ -23,6 +23,7 @@ private:
     double peso;
     EstadoEncomenda estado;
 
+
 public:
     Encomenda(int id, int idCliente, int idDepOrigem, int idDepDestino, std::string descricao, double peso);
     int getId() const;
@@ -37,6 +38,8 @@ public:
     int getIdDepDestino() const;
     void atribuirVeiculo(int idVeiculo);
     bool atualizarEstado(EstadoEncomenda novoestado);
+    int getIdDepositoDestino() const;
+    int getIdDepositoOrigem() const;
 };
 
 #endif

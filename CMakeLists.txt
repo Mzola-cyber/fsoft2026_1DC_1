@@ -90,8 +90,8 @@ add_executable(GestaoEncomendas main.cpp
         src/repository/headers/EncomendaRepository.h
         src/repository/headers/VeiculoRepository.h
 
-        src/service/Recomendacao.cpp
-        src/service/Recomendacao.h
+        src/service/sources/RecomendacaoService.cpp
+        src/service/headers/RecomendacaoService.h
         src/View/sources/ClienteView.cpp
 
         src/View/sources/UtilsView.cpp
@@ -102,5 +102,13 @@ add_executable(GestaoEncomendas main.cpp
         src/mappers/sources/VeiculoMapper.cpp
         src/View/sources/MenuView.cpp
         src/View/headers/MenuView.h
+        src/service/sources/EncomendaService.cpp
+        src/service/headers/EncomendaService.h
+        src/service/sources/ClienteService.cpp
+        src/service/headers/ClienteService.h
+        src/service/sources/VeiculoService.cpp
+        src/service/headers/VeiculoService.h
+        src/service/sources/DepositoService.cpp
+        src/service/headers/DepositoService.h
 )
 

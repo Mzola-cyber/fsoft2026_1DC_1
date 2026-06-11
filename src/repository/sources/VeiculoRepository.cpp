@@ -64,3 +64,7 @@ const Veiculo* VeiculoRepository::procurarConst(int id) const {
 const std::vector<Veiculo>& VeiculoRepository::getAll() const {
     return veiculos;
 }
+
+std::vector<Veiculo>& VeiculoRepository::getAll() {
+    return veiculos;
+}

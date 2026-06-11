@@ -38,6 +38,12 @@ const Encomenda* EncomendaRepository::procurarConst(int id) const {
     return nullptr;
 }
 
+// versão leitura
 const std::vector<Encomenda>& EncomendaRepository::getAll() const {
+    return encomendas;
+}
+
+// versão modificação
+std::vector<Encomenda>& EncomendaRepository::getAll() {
     return encomendas;
 }
