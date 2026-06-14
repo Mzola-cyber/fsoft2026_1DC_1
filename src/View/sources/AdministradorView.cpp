@@ -146,6 +146,7 @@ void AdministradorView::printEncomendas(const std::vector<EncomendaOutDto>& enco
                   << " | " << e.idDepOrigem << " -> " << e.idDepDestino
                   << " | " << e.descricao
                   << " | Peso: " << e.peso<< " kg"
+                  << " | Veiculo: " << e.idVeiculo
                   << " | Estado: " << utils.nomeEstado(e.estado)
                   << "\n";
     }

@@ -1,34 +1,29 @@
 #include "../headers/RecomendacaoService.h"
-
 #include <utility>
 #include <algorithm>
 #include <vector>
 #include <limits>
+#include <iostream>
 
 RecomendacaoService::RecomendacaoService(VeiculoRepository& repo)
-	: veiculosRepository(repo) {}
+	: veiculosRepository(repo)
+{}
 
 int RecomendacaoService::recomendarEReservar(double peso) {
 
-	 const auto& veiculos = veiculosRepository.getAll();
+	for (auto& v : veiculosRepository.getAll()) {
 
-	std::vector<std::pair<double, int>> candidatos;
+		std::cout << "Veiculo " << v.getId()
+				  << " Disponivel=" << v.estaDisponivel()
+				  << std::endl;
 
-	for (const auto& v : veiculos) {
 		if (!v.estaDisponivel()) continue;
 
-		double cap = v.getCapacidade();
+		if (v.getCapacidade() >= peso) {
 
-		if (cap >= peso) {
-			candidatos.emplace_back(cap, v.getId());
-		}
-	}
-
-	std::sort(candidatos.begin(), candidatos.end());
-
-	for (const auto& c : candidatos) {
-		if (veiculosRepository.reservarVeiculo(c.second)) {
-			return c.second;
+			if (veiculosRepository.reservarVeiculo(v.getId())) {
+				return v.getId();
+			}
 		}
 	}
 

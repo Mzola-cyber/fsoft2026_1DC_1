@@ -21,12 +21,11 @@ Sistema::Sistema()
     ),clienteService(
         clientesRepository,
         encomendaRepository
-      ), veiculoService(
+    ), veiculoService(
         veiculosRepository,
         encomendaRepository
-      ), depositoService(
+    ), depositoService(
         depositosRepository)
-
 {}
 
 
@@ -78,10 +77,10 @@ void Sistema::runCliente() {
                 break;
             }
             case 4: {
+                menuView.printMensagem("### CANCELAR ENCOMENDA ###");
                 int idCliente = clienteView.getIdCliente();
                 ClienteInDto c = clienteView.getContacto();
                 int idEncomenda = clienteView.getIdEncomenda();
-
                 if (!verificarCliente(idCliente, c.contacto)) {
                     menuView.printMensagem("Cliente ou contacto invalido.");
                     break;
@@ -256,6 +255,22 @@ bool Sistema::avancarEstadoEncomenda(int idEncomenda) {
 
 bool Sistema::cancelarEncomenda(int idEncomenda) {
     return encomendaService.cancelarEncomenda(idEncomenda);
+}
+
+Cliente* Sistema::procurarCliente(int id) {
+    return clientesRepository.procurar(id);
+}
+
+Deposito* Sistema::procurarDeposito(int id) {
+    return depositosRepository.procurar(id);
+}
+
+Veiculo* Sistema::procurarVeiculo(int idVeiculo) {
+    return veiculosRepository.procurar(idVeiculo);
+}
+
+Encomenda* Sistema::procurarEncomenda(int id) {
+    return encomendaRepository.procurar(id);
 }
 
 std::string Sistema::obterMatriculaVeiculo(int idVeiculo) const {
