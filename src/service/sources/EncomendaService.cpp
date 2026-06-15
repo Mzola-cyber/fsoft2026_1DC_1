@@ -43,8 +43,6 @@ EncomendaOutDto EncomendaService::criarEncomenda(const EncomendaInDto& dto) {
     Encomenda* encomenda = encomendaRepository.procurar(id);
     if (!encomenda) return {};
 
-    // ✅ diminuir capacidade origem
-    origem->diminuirCapacidade(dto.peso);
 
     int idVeiculo = recomendacaoService.recomendarEReservar(dto.peso);
 
@@ -55,11 +53,12 @@ EncomendaOutDto EncomendaService::criarEncomenda(const EncomendaInDto& dto) {
         encomenda->atualizarEstado(EstadoEncomenda::PENDENTE);
     }
 
+    //diminuir capacidade origem
+    origem->diminuirCapacidade(dto.peso);
     return EncomendaMapper::toOutDto(*encomenda);
 }
 
 bool EncomendaService::avancarEstadoEncomenda(int idEncomenda) {
-
     Encomenda* e = encomendaRepository.procurar(idEncomenda);
     if (!e) return false;
 
@@ -69,7 +68,7 @@ bool EncomendaService::avancarEstadoEncomenda(int idEncomenda) {
             bool ok = e->atualizarEstado(EstadoEncomenda::EM_TRANSPORTE);
 
             if (ok) {
-                // ✅ ocupação do depósito destino AQUI (correto)
+                //ocupação do depósito destino AQUI (correto)
                 Deposito* destino = depositosRepository.procurar(e->getIdDepositoDestino());
 
                 if (destino) {
@@ -86,7 +85,7 @@ bool EncomendaService::avancarEstadoEncomenda(int idEncomenda) {
             if (ok) {
                 veiculosRepository.libertarVeiculo(e->getIdVeiculo());
 
-                // ✅ agora tenta atribuir pendentes
+                //agora tenta atribuir pendentes
                 tentarAtribuirPendentes();
             }
 
@@ -111,22 +110,20 @@ bool EncomendaService::cancelarEncomenda(int idEncomenda) {
         }
 
     bool ok = e->atualizarEstado(EstadoEncomenda::CANCELADA);
-
     if (ok) {
-
-        // ✅ libertar veículo
+        //libertar veículo
         if (e->getIdVeiculo() != -1) {
             veiculosRepository.libertarVeiculo(e->getIdVeiculo());
-        }
 
-        // ✅ devolver capacidade ao depósito origem
+            e->atribuirVeiculo(-1); // QUANDO CANCELADA, MUDA O IDVEICULO PARA -1 DA ENCOMENDA
+        }
+        tentarAtribuirPendentes();
+
+        // devevolver capacidade ao deposito.
         Deposito* origem = depositosRepository.procurar(e->getIdDepositoOrigem());
         if (origem) {
             origem->aumentarCapacidade(e->getPeso());
         }
-
-        // ✅ tentar atribuir pendentes
-        tentarAtribuirPendentes();
     }
 
     return ok;
@@ -151,7 +148,6 @@ std::string EncomendaService::consultarEstadoEncomenda(int idEncomenda,
     return "Encomenda #" + std::to_string(e->getId()) +
            " - Estado: " + estado;
 }
-
 void EncomendaService::tentarAtribuirPendentes() {
 
     for (auto& e : encomendaRepository.getAll()) {
@@ -159,11 +155,23 @@ void EncomendaService::tentarAtribuirPendentes() {
         if (e.getEstado() != EstadoEncomenda::PENDENTE)
             continue;
 
-        int idVeiculo = recomendacaoService.recomendarEReservar(e.getPeso());
+        // 🔍 procurar veículo manualmente (estado real)
+        for (auto& v : veiculosRepository.getAll()) {
 
-        if (idVeiculo != -1) {
-            e.atribuirVeiculo(idVeiculo);
-            e.atualizarEstado(EstadoEncomenda::ATRIBUIDA);
+            if (!v.estaDisponivel())
+                continue;
+
+            if (v.getCapacidade() >= e.getPeso()) {
+
+                //reservar diretamente
+                veiculosRepository.reservarVeiculo(v.getId());
+
+                //atualizar encomenda
+                e.atribuirVeiculo(v.getId());
+                e.atualizarEstado(EstadoEncomenda::ATRIBUIDA);
+
+                break; // passa à próxima encomenda
+            }
         }
     }
 }

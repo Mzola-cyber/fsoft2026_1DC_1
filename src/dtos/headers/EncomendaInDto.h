@@ -11,6 +11,8 @@ public:
     int idDepDestino;
     int indiceDestino;
     int indiceOrigem;
+    std::string nomeOrigem;
+    std::string nomeDestino;
     std::string descricao;
     double peso;
 };

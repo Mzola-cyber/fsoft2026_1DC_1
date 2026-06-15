@@ -52,6 +52,12 @@ bool Encomenda::atualizarEstado(EstadoEncomenda novoestado) {
         return true;
     }
 
+    if (estado == EstadoEncomenda::PENDENTE &&
+        novoestado == EstadoEncomenda::ATRIBUIDA) {
+        estado = novoestado;
+        return true;
+        }
+
     if (estado == EstadoEncomenda::ATRIBUIDA &&
         novoestado == EstadoEncomenda::EM_TRANSPORTE) {
         estado = novoestado;

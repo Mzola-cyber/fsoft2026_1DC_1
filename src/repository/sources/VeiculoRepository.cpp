@@ -2,8 +2,7 @@
 #include <algorithm>
 
 VeiculoRepository::VeiculoRepository() {
-    
-    
+
     adicionar("CANDONGEIRO-001", 1000.0);
     adicionar("CANDONGEIRO-002", 2000.0);
 }
