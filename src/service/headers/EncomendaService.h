@@ -37,7 +37,7 @@ public:
     EncomendaOutDto criarEncomenda(const EncomendaInDto& dto);
     bool avancarEstadoEncomenda(int idEncomenda);
     bool cancelarEncomenda(int idEncomenda);
-    [[nodiscard]] std::string consultarEstadoEncomenda(int idEncomenda, int idCliente) const;
+    [[nodiscard]] std::string consultarEstadoEncomenda(int idEncomenda, int idCliente) const;/// PARA O SISTEMA AO EXECUTAR NAO IGNORAR
     void tentarAtribuirPendentes();
 };
 #endif //GESTAOENCOMENDAS_ENCOMENDASERVICE_H

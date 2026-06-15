@@ -112,3 +112,18 @@ add_executable(GestaoEncomendas main.cpp
         src/service/headers/DepositoService.h
 )
 
+
+include(FetchContent)
+
+FetchContent_Declare(
+        googletest
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+        URL https://github.com/google/googletest/archive/refs/heads/main.zip
+)
+
+FetchContent_MakeAvailable(googletest)
+enable_testing()
+
+add_subdirectory(ProjectTest)
+
+

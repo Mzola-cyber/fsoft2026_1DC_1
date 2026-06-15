@@ -12,17 +12,26 @@ private:
 
 public:
     VeiculoRepository();
-    int adicionar(const std::string& matricula, double capacidadeMax);
-     bool reservarVeiculo(int id);
-     bool libertarVeiculo(int id);
+
+    int adicionar(const std::string &matricula, double capacidadeMax);
+
+    bool reservarVeiculo(int id);
+
+    bool libertarVeiculo(int id);
+
     bool remover(int id);
-    Veiculo* procurar(int id);
-     const Veiculo* procurarConst(int id) const;
+
+    Veiculo *procurar(int id);
+
+    const Veiculo *procurarConst(int id) const;
+
+    bool existePorMatricula(const std::string &matricula) const;
+
     // leitura
-    const std::vector<Veiculo>& getAll() const;
+    const std::vector<Veiculo> &getAll() const;
 
     // modificação ADICIONAR
-    std::vector<Veiculo>& getAll();
+    std::vector<Veiculo> &getAll();
 
 };
 

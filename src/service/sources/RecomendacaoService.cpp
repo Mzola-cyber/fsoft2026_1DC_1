@@ -11,19 +11,20 @@ RecomendacaoService::RecomendacaoService(VeiculoRepository& repo)
 
 int RecomendacaoService::recomendarEReservar(double peso) {
 
-	for (auto& v : veiculosRepository.getAll()) {
+	for (const auto& v : veiculosRepository.getAll()) {
+
+		// usar estado REAL do repository
+		const Veiculo* real = veiculosRepository.procurarConst(v.getId());
 
 		std::cout << "Veiculo " << v.getId()
-				  << " Disponivel=" << v.estaDisponivel()
+				  << " Disponivel=" << real->estaDisponivel()
 				  << std::endl;
 
-		if (!v.estaDisponivel()) continue;
+		if (real->estaDisponivel() && real->getCapacidade() >= peso) {
 
-		if (v.getCapacidade() >= peso) {
+			veiculosRepository.reservarVeiculo(v.getId());
 
-			if (veiculosRepository.reservarVeiculo(v.getId())) {
-				return v.getId();
-			}
+			return v.getId();
 		}
 	}
 

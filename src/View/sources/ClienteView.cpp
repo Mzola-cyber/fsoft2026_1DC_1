@@ -53,22 +53,22 @@ EncomendaInDto ClienteView::getEncomenda(const std::vector<DepositoOutDto>& depo
                   << "\n";
     }
 
-    encomenda.indiceOrigem = utils.lerInteiro("Escolha o indice do deposito de origem: ");
+    int indiceOrigem = utils.lerInteiro("Escolha o indice do deposito de origem: ");
 
-    if (encomenda.indiceOrigem < 0 || encomenda.indiceOrigem >= static_cast<int>(depositos.size())) {
+    if (indiceOrigem < 0 || indiceOrigem >= static_cast<int>(depositos.size())) {
         std::cout << "Indice de origem invalido.\n";
         return encomenda;
     }
 
-    encomenda.indiceDestino = utils.lerInteiro("Escolha o indice do deposito de destino: ");
+    int indiceDestino = utils.lerInteiro("Escolha o indice do deposito de destino: ");
 
-    if (encomenda.indiceDestino < 0 || encomenda.indiceDestino >= static_cast<int>(depositos.size())) {
+    if (indiceDestino < 0 || indiceDestino >= static_cast<int>(depositos.size())) {
         std::cout << "Indice de destino invalido.\n";
         return encomenda;
     }
 
-    encomenda.idDepOrigem = depositos[encomenda.indiceOrigem].id;
-    encomenda.idDepDestino = depositos[encomenda.indiceDestino].id;
+    encomenda.idDepOrigem = depositos[indiceOrigem].id;
+    encomenda.idDepDestino = depositos[indiceDestino].id;
 
     encomenda.descricao = utils.lerLinha("Descricao: ");
     encomenda.peso = utils.lerDouble("Peso (kg): ");

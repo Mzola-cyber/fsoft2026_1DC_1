@@ -67,3 +67,13 @@ const std::vector<Veiculo>& VeiculoRepository::getAll() const {
 std::vector<Veiculo>& VeiculoRepository::getAll() {
     return veiculos;
 }
+
+bool VeiculoRepository::existePorMatricula(const std::string &matricula) const {
+    for (const auto& v : veiculos) {
+        if (v.getMatriculaVeiculo() == matricula) {
+            return true;
+        }
+    }
+    return false;
+}
+

@@ -3,6 +3,7 @@
 //
 
 #include "../headers/VeiculoService.h"
+#include <stdexcept>
 VeiculoService::VeiculoService(VeiculoRepository& v, EncomendaRepository& e)
     : veiculosRepository(v), encomendaRepository(e) {}
 
@@ -21,12 +22,24 @@ bool VeiculoService::removerVeiculo(int idVeiculo) {
     return veiculosRepository.remover(idVeiculo);
 }
 
+
 VeiculoOutDto VeiculoService::adicionarVeiculo(const VeiculoInDto& dto) {
 
-    int id=veiculosRepository.adicionar(dto.matricula,dto.capacidadeMax);
-    Veiculo* veiculo=veiculosRepository.procurar(id);
-    if (veiculo==nullptr) {
-        return VeiculoOutDto{};
+    //VALIDAR DUPLICADOS (AQUI!)
+    if (veiculosRepository.existePorMatricula(dto.matricula)) {
+        throw std::invalid_argument("Matricula ja existe");
     }
+
+    // CRIAR
+    int id = veiculosRepository.adicionar(
+        dto.matricula,
+        dto.capacidadeMax
+    );
+
+    if (id == -1) {
+        throw std::invalid_argument("Dados invalidos do veiculo");
+    }
+
+    Veiculo* veiculo = veiculosRepository.procurar(id);
     return VeiculoMapper::toOutDto(*veiculo);
 }

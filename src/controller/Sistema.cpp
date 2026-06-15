@@ -128,14 +128,19 @@ void Sistema::runAdministrador() {
                 break;
             }
             case 2: {
+
                 VeiculoInDto dto = adminView.getVeiculo();
-                VeiculoOutDto veiculo = adicionarVeiculo(dto);
-                if (veiculo.idVeiculo == 0) {
-                    menuView.printMensagem("Nao foi possivel adicionar veiculo.");
-                } else {
+
+                try {
+                    VeiculoOutDto veiculo = adicionarVeiculo(dto);
+
                     adminView.printVeiculo(veiculo);
                     menuView.printMensagem("Veiculo Adicionado com sucesso");
+                } catch (std::invalid_argument& e) {
+
+                    menuView.printMensagem(e.what());
                 }
+
                 break;
             }
             case 3: {

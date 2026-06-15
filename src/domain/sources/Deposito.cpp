@@ -52,7 +52,7 @@ void Deposito::aumentarCapacidade(double peso) {
     if (peso > 0) {
         capacidadeAtual += peso;
 
-        // ✅ evitar ultrapassar limite máximo
+        //evitar ultrapassar limite máximo
         if (capacidadeAtual > capacidadeMax) {
             capacidadeAtual = capacidadeMax;
         }

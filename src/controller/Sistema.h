@@ -39,6 +39,7 @@ private:
     ClienteService clienteService;
     VeiculoService veiculoService;
     DepositoService depositoService;
+
     Cliente*   procurarCliente(int id);
     Deposito*  procurarDeposito(int id);
     Veiculo*   procurarVeiculo(int idVeiculo);
